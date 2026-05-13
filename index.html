@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>贵州茅台研究型数据看板</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="toolbar">
+        <div>
+          <div class="kicker">MOUTAI RESEARCH DESK</div>
+          <h1>贵州茅台研究型数据看板</h1>
+        </div>
+        <div class="toolbar-actions">
+          <button id="resetData" type="button">恢复演示数据</button>
+          <button id="exportData" type="button">导出JSON</button>
+          <select id="importType" aria-label="导入类型">
+            <option value="winePrices">酒价</option>
+            <option value="stockDaily">股价</option>
+            <option value="financialReports">财报</option>
+            <option value="events">事件</option>
+          </select>
+          <button id="downloadTemplate" type="button">下载CSV模板</button>
+          <label class="file-button">导入JSON<input id="importData" type="file" accept="application/json" /></label>
+          <label class="file-button">导入CSV<input id="importCsv" type="file" accept=".csv,text/csv" /></label>
+        </div>
+      </header>
+
+      <section id="errorBanner" class="error" hidden></section>
+      <section class="notice">
+        这是研究型看板，不是交易建议。默认核心计算排除 sample 数据；演示插值只用于走势观察，不参与 PE、相关性和预测。
+      </section>
+
+      <section class="ticker-grid seven">
+        <article><label>最新散瓶价</label><strong id="spotPrice">--</strong><span id="spotDelta">--</span></article>
+        <article><label>最新原箱价</label><strong id="casePrice">--</strong><span id="caseDelta">--</span></article>
+        <article><label>最新股价</label><strong id="stockPrice">--</strong><span id="stockDelta">--</span></article>
+        <article><label>当前PE TTM</label><strong id="peTtm">--</strong><span id="peNote">--</span></article>
+        <article><label>PE历史分位</label><strong id="pePercentile">--</strong><span>基于已有PE样本</span></article>
+        <article><label>股息率</label><strong id="dividendYield">--</strong><span>最近股价口径</span></article>
+        <article><label>当前判断</label><strong id="actionSignal">--</strong><span id="actionReason">--</span></article>
+      </section>
+
+      <section class="workspace">
+        <article class="chart-panel">
+          <div class="chart-head">
+            <div>
+              <h2 id="mainChartTitle">酒价 vs 股价趋势</h2>
+              <p id="mainChartSubtitle">支持双轴和涨跌幅归一化；tooltip 展示来源和 sample 状态。</p>
+            </div>
+            <div class="switches">
+              <button class="active" data-chart="price" type="button">酒价/股价</button>
+              <button data-chart="pe" type="button">PE估值</button>
+              <button data-chart="divergence" type="button">背离</button>
+              <button data-chart="financial" type="button">财务</button>
+            </div>
+          </div>
+
+          <div class="range-bar">
+            <button data-range="1m" type="button">1月</button>
+            <button data-range="3m" type="button">3月</button>
+            <button data-range="6m" type="button">6月</button>
+            <button data-range="1y" type="button">1年</button>
+            <button data-range="2y" type="button">2年</button>
+            <button data-range="3y" type="button">3年</button>
+            <button data-range="5y" type="button">5年</button>
+            <button data-range="10y" type="button">10年</button>
+            <button class="active" data-range="all" type="button">全部</button>
+            <button class="active" data-mode="dual" type="button">双轴</button>
+            <button data-mode="indexed" type="button">涨跌幅</button>
+          </div>
+
+          <div id="chartRoot" class="chart-root"></div>
+          <div id="chartLegend" class="legend"></div>
+          <div class="mini-chart-grid">
+            <div class="mini-chart-card">
+              <h3>PE估值小图</h3>
+              <div id="miniPeChart" class="mini-chart"></div>
+            </div>
+            <div class="mini-chart-card">
+              <h3>酒价-股价背离小图</h3>
+              <div id="miniDivergenceChart" class="mini-chart"></div>
+            </div>
+            <div class="mini-chart-card">
+              <h3>财务趋势小图</h3>
+              <div id="miniFinancialChart" class="mini-chart"></div>
+            </div>
+          </div>
+        </article>
+
+        <aside class="side-panel">
+          <section>
+            <h3>数据质量</h3>
+            <div id="dataQualityPanel" class="stack"></div>
+          </section>
+          <section>
+            <h3>事件与异动</h3>
+            <div id="eventList" class="stack"></div>
+          </section>
+        </aside>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="panel">
+          <h3>关系分析</h3>
+          <div id="relationshipPanel" class="metric-grid"></div>
+        </article>
+        <article class="panel">
+          <h3>估值与隐含增速</h3>
+          <div id="valuationPanel" class="metric-grid"></div>
+        </article>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="panel">
+          <h3>财务数据看板</h3>
+          <div id="financialPanel" class="metric-grid"></div>
+        </article>
+        <article class="panel">
+          <h3>业务结构看板</h3>
+          <div id="businessPanel" class="metric-grid"></div>
+        </article>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="panel">
+          <h3>新增数据</h3>
+          <div class="range-bar">
+            <button class="active" data-entry="winePrices" type="button">酒价</button>
+            <button data-entry="stockDaily" type="button">股价</button>
+            <button data-entry="financialReports" type="button">财报</button>
+            <button data-entry="events" type="button">事件</button>
+          </div>
+          <form id="dataEntryForm" class="record-form"></form>
+        </article>
+
+        <article class="panel">
+          <h3>预测情景参数</h3>
+          <form id="forecastForm" class="record-form">
+            <label>当前EPS<input name="currentEps" type="number" step="0.01" /></label>
+            <label>未来净利增速%<input name="growthRate" type="number" step="0.1" /></label>
+            <label>目标PE<input name="targetPe" type="number" step="0.1" /></label>
+            <label>安全边际%<input name="marginOfSafety" type="number" step="1" /></label>
+            <label>
+              酒价状态
+              <select name="winePriceState">
+                <option value="below1600">低于1600</option>
+                <option value="1600-1650">1600-1650</option>
+                <option value="1650-1700">1650-1700</option>
+                <option value="above1700">高于1700</option>
+              </select>
+            </label>
+            <button type="submit">更新推演</button>
+          </form>
+          <div id="forecastPanel" class="scenario-list"></div>
+        </article>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="panel">
+          <h3>最近酒价/股价</h3>
+          <div class="table-wrap"><table><thead><tr><th>日期</th><th>散瓶</th><th>原箱</th><th>股价</th><th>PE</th><th>来源</th></tr></thead><tbody id="recentRows"></tbody></table></div>
+        </article>
+        <article class="panel">
+          <h3>最近财报</h3>
+          <div class="table-wrap"><table><thead><tr><th>期间</th><th>营收</th><th>净利</th><th>EPS</th><th>毛利率</th><th>净利率</th></tr></thead><tbody id="reportRows"></tbody></table></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="./seed-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
