@@ -1,0 +1,45 @@
+name: Update dashboard data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 20 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+
+      - name: Run data update scripts
+        continue-on-error: true
+        env:
+          TUSHARE_TOKEN: ${{ secrets.TUSHARE_TOKEN }}
+        run: python scripts/update_all.py
+
+      - name: Commit updated data files
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git status --short
+          if [ -n "$(git status --porcelain data)" ]; then
+            git add data/*.json
+            git commit -m "chore: update dashboard data" || true
+            git push
+          else
+            echo "No data changes to commit"
+          fi
