@@ -32,6 +32,7 @@
       <section class="notice">
         这是研究型看板，不是交易建议。默认核心计算排除 sample 数据；演示插值只用于走势观察，不参与 PE、相关性和预测。
       </section>
+      <section id="stockDataBanner" class="source-banner" aria-live="polite"></section>
 
       <section class="ticker-grid seven">
         <article><label>最新散瓶价</label><strong id="spotPrice">--</strong><span id="spotDelta">--</span></article>
@@ -132,6 +133,62 @@
 
     <script src="./seed-data.js"></script>
     <script src="./data-loader.js"></script>
+    <script>
+      (function () {
+        const storageKey = "moutai-research-state-v1";
+        const loaded = window.MOUTAI_DATA_LOAD_STATUS || {};
+        const seed = window.MOUTAI_SEED || {};
+        const stockRows = Array.isArray(seed.stockDaily) ? seed.stockDaily : [];
+        const status = seed.dataSourceStatus || {};
+        const stock = status.stock || {};
+        const hasRealStock = loaded.mode === "real" && stockRows.length > 0;
+
+        if (hasRealStock) {
+          try { localStorage.removeItem(storageKey); } catch {}
+        }
+
+        function fmt(value) {
+          return Number(value || 0).toLocaleString("zh-CN");
+        }
+
+        function providerLabel(source) {
+          const value = String(source || "").toLowerCase();
+          if (value.includes("akshare")) return "AkShare";
+          if (value.includes("tushare")) return "Tushare";
+          if (value === "data") return "data/stockDaily.json";
+          if (value === "seed") return "seed-data.js";
+          return source || "--";
+        }
+
+        function sourceCode() {
+          if (hasRealStock) return String(stock.source || "data").toLowerCase();
+          if (loaded.mode === "real") return "data";
+          return "seed";
+        }
+
+        function renderSource() {
+          const records = hasRealStock ? stockRows.length : Number(stock.records || stockRows.length || 0);
+          const type = hasRealStock ? "真实数据" : "演示数据";
+          const source = sourceCode();
+          const sourceName = hasRealStock ? providerLabel(stock.source || "data") : "seed-data.js";
+          const success = hasRealStock ? true : stock.success === true;
+          const headline = `${type} / ${sourceName} / ${fmt(records)}条`;
+          const banner = document.getElementById("stockDataBanner");
+          if (banner) {
+            banner.className = `source-banner${hasRealStock ? "" : " demo"}`;
+            banner.innerHTML = `<div><strong>股价数据：${headline}</strong><span>${hasRealStock ? "页面已优先使用 data/stockDaily.json；localStorage 不会覆盖该股价数据。" : "data/stockDaily.json 当前没有有效记录，页面使用 seed-data.js 演示股价。"}</span></div><span>stock.success=${String(success)}｜source=${source}｜records=${records}</span>`;
+          }
+          const panel = document.getElementById("dataSourcePanel");
+          if (panel) {
+            const row = (title, body) => `<div class="note-card"><strong>${title}</strong><span>${body}</span></div>`;
+            panel.innerHTML += row("股价真实数据", headline);
+            panel.innerHTML += row("stock 运行状态", `stock.success=${String(success)}<br>source=${source}<br>records=${records}`);
+          }
+        }
+
+        document.addEventListener("DOMContentLoaded", renderSource);
+      })();
+    </script>
     <script src="./app.js"></script>
   </body>
 </html>
