@@ -1,0 +1,14 @@
+[
+  {
+    "name": "示例酒价来源",
+    "url": "https://example.com",
+    "enabled": false,
+    "parserType": "html_regex",
+    "datePattern": "(\\d{4}-\\d{2}-\\d{2})",
+    "bottlePricePattern": "飞天.*?散瓶.*?(\\d{4})",
+    "casePricePattern": "飞天.*?原箱.*?(\\d{4})",
+    "product": "53度飞天茅台",
+    "year": "当年",
+    "spec": "500ml"
+  }
+]
