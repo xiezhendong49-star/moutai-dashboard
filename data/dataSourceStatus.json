@@ -1,0 +1,24 @@
+{
+  "updatedAt": "2026-05-13 18:00:00",
+  "stock": {
+    "success": false,
+    "source": "tushare/akshare",
+    "updatedAt": "2026-05-13 18:00:00",
+    "message": "尚未运行股价数据更新脚本",
+    "records": 0
+  },
+  "winePrice": {
+    "success": false,
+    "source": "configured_html_sources",
+    "updatedAt": "2026-05-13 18:00:00",
+    "message": "尚未配置启用的酒价来源",
+    "records": 0
+  },
+  "financialReports": {
+    "success": false,
+    "source": "贵州茅台官网",
+    "updatedAt": "2026-05-13 18:00:00",
+    "message": "尚未运行财报列表更新脚本",
+    "records": 0
+  }
+}

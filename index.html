@@ -75,53 +75,27 @@
           <div id="chartRoot" class="chart-root"></div>
           <div id="chartLegend" class="legend"></div>
           <div class="mini-chart-grid">
-            <div class="mini-chart-card">
-              <h3>PE估值小图</h3>
-              <div id="miniPeChart" class="mini-chart"></div>
-            </div>
-            <div class="mini-chart-card">
-              <h3>酒价-股价背离小图</h3>
-              <div id="miniDivergenceChart" class="mini-chart"></div>
-            </div>
-            <div class="mini-chart-card">
-              <h3>财务趋势小图</h3>
-              <div id="miniFinancialChart" class="mini-chart"></div>
-            </div>
+            <div class="mini-chart-card"><h3>PE估值小图</h3><div id="miniPeChart" class="mini-chart"></div></div>
+            <div class="mini-chart-card"><h3>酒价-股价背离小图</h3><div id="miniDivergenceChart" class="mini-chart"></div></div>
+            <div class="mini-chart-card"><h3>财务趋势小图</h3><div id="miniFinancialChart" class="mini-chart"></div></div>
           </div>
         </article>
 
         <aside class="side-panel">
-          <section>
-            <h3>数据质量</h3>
-            <div id="dataQualityPanel" class="stack"></div>
-          </section>
-          <section>
-            <h3>事件与异动</h3>
-            <div id="eventList" class="stack"></div>
-          </section>
+          <section><h3>数据质量</h3><div id="dataQualityPanel" class="stack"></div></section>
+          <section><h3>数据源状态</h3><div id="dataSourcePanel" class="stack"></div></section>
+          <section><h3>事件与异动</h3><div id="eventList" class="stack"></div></section>
         </aside>
       </section>
 
       <section class="bottom-grid">
-        <article class="panel">
-          <h3>关系分析</h3>
-          <div id="relationshipPanel" class="metric-grid"></div>
-        </article>
-        <article class="panel">
-          <h3>估值与隐含增速</h3>
-          <div id="valuationPanel" class="metric-grid"></div>
-        </article>
+        <article class="panel"><h3>关系分析</h3><div id="relationshipPanel" class="metric-grid"></div></article>
+        <article class="panel"><h3>估值与隐含增速</h3><div id="valuationPanel" class="metric-grid"></div></article>
       </section>
 
       <section class="bottom-grid">
-        <article class="panel">
-          <h3>财务数据看板</h3>
-          <div id="financialPanel" class="metric-grid"></div>
-        </article>
-        <article class="panel">
-          <h3>业务结构看板</h3>
-          <div id="businessPanel" class="metric-grid"></div>
-        </article>
+        <article class="panel"><h3>财务数据看板</h3><div id="financialPanel" class="metric-grid"></div></article>
+        <article class="panel"><h3>业务结构看板</h3><div id="businessPanel" class="metric-grid"></div></article>
       </section>
 
       <section class="bottom-grid">
@@ -143,15 +117,7 @@
             <label>未来净利增速%<input name="growthRate" type="number" step="0.1" /></label>
             <label>目标PE<input name="targetPe" type="number" step="0.1" /></label>
             <label>安全边际%<input name="marginOfSafety" type="number" step="1" /></label>
-            <label>
-              酒价状态
-              <select name="winePriceState">
-                <option value="below1600">低于1600</option>
-                <option value="1600-1650">1600-1650</option>
-                <option value="1650-1700">1650-1700</option>
-                <option value="above1700">高于1700</option>
-              </select>
-            </label>
+            <label>酒价状态<select name="winePriceState"><option value="below1600">低于1600</option><option value="1600-1650">1600-1650</option><option value="1650-1700">1650-1700</option><option value="above1700">高于1700</option></select></label>
             <button type="submit">更新推演</button>
           </form>
           <div id="forecastPanel" class="scenario-list"></div>
@@ -159,18 +125,13 @@
       </section>
 
       <section class="bottom-grid">
-        <article class="panel">
-          <h3>最近酒价/股价</h3>
-          <div class="table-wrap"><table><thead><tr><th>日期</th><th>散瓶</th><th>原箱</th><th>股价</th><th>PE</th><th>来源</th></tr></thead><tbody id="recentRows"></tbody></table></div>
-        </article>
-        <article class="panel">
-          <h3>最近财报</h3>
-          <div class="table-wrap"><table><thead><tr><th>期间</th><th>营收</th><th>净利</th><th>EPS</th><th>毛利率</th><th>净利率</th></tr></thead><tbody id="reportRows"></tbody></table></div>
-        </article>
+        <article class="panel"><h3>最近酒价/股价</h3><div class="table-wrap"><table><thead><tr><th>日期</th><th>散瓶</th><th>原箱</th><th>股价</th><th>PE</th><th>来源</th></tr></thead><tbody id="recentRows"></tbody></table></div></article>
+        <article class="panel"><h3>最近财报</h3><div class="table-wrap"><table><thead><tr><th>期间</th><th>营收</th><th>净利</th><th>EPS</th><th>毛利率</th><th>净利率</th></tr></thead><tbody id="reportRows"></tbody></table></div></article>
       </section>
     </main>
 
     <script src="./seed-data.js"></script>
+    <script src="./data-loader.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
