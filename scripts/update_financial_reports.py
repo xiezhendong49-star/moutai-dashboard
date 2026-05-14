@@ -24,8 +24,8 @@ REPORT_FILE = DATA_DIR / "financialReports.json"
 EVENT_FILE = DATA_DIR / "events.json"
 STATUS_FILE = DATA_DIR / "dataSourceStatus.json"
 DEFAULT_REPORT_URLS = [
-    "https://www.moutaichina.com/maotai/index/xwzx/gsgg",
-    "https://www.moutaichina.com/",
+    "https://www.moutaichina.com/mtgf/tzzgx/cwbg/index.html",
+    "https://www.moutaichina.com/mtgf/tzzgx/gsgg/index.html",
 ]
 
 
