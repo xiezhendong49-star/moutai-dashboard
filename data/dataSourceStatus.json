@@ -1,24 +1,41 @@
 {
-  "updatedAt": "2026-05-13 18:00:00",
+  "updatedAt": "2026-05-14 04:21:45",
   "stock": {
-    "success": false,
-    "source": "tushare/akshare",
-    "updatedAt": "2026-05-13 18:00:00",
-    "message": "尚未运行股价数据更新脚本",
-    "records": 0
+    "success": true,
+    "source": "akshare",
+    "updatedAt": "2026-05-14 04:21:43",
+    "message": "股价和估值数据更新成功",
+    "records": 3964
   },
   "winePrice": {
     "success": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-05-13 18:00:00",
-    "message": "尚未配置启用的酒价来源",
+    "updatedAt": "2026-05-14 04:21:44",
+    "message": "没有启用的酒价来源，继续使用最近一次成功数据",
     "records": 0
   },
   "financialReports": {
     "success": false,
     "source": "贵州茅台官网",
-    "updatedAt": "2026-05-13 18:00:00",
-    "message": "尚未运行财报列表更新脚本",
+    "updatedAt": "2026-05-14 04:21:45",
+    "message": "财报列表更新失败：https://www.moutaichina.com/maotai/index/xwzx/gsgg: 404 Client Error: Not Found for url: https://www.moutaichina.com/maotai/index/xwzx/gsgg；https://www.moutaichina.com/: 未发现财报链接",
     "records": 0
+  },
+  "summary": {
+    "stock": {
+      "success": true,
+      "script": "update_stock_data.py",
+      "message": "ok"
+    },
+    "winePrice": {
+      "success": false,
+      "script": "update_wine_price.py",
+      "message": "failed with code 1"
+    },
+    "financialReports": {
+      "success": false,
+      "script": "update_financial_reports.py",
+      "message": "failed with code 1"
+    }
   }
 }
