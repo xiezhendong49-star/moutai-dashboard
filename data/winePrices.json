@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "date": "2026-05-14",
+    "product": "2026年飞天茅台 53度 500ml",
+    "bottlePrice": 1640,
+    "casePrice": 1680,
+    "source": "酱酒界酱酒行情监测中心",
+    "sourceUrl": "https://www.jiangjiujie.com/quote/product.php",
+    "publishedAt": "2026-05-14",
+    "updatedAt": "2026-05-15 02:21:45",
+    "verified": true,
+    "sample": false
+  }
+]
