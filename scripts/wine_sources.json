@@ -1,14 +1,15 @@
 [
   {
-    "name": "示例酒价来源",
-    "url": "https://example.com",
-    "enabled": false,
-    "parserType": "html_regex",
-    "datePattern": "(\\d{4}-\\d{2}-\\d{2})",
-    "bottlePricePattern": "飞天.*?散瓶.*?(\\d{4})",
-    "casePricePattern": "飞天.*?原箱.*?(\\d{4})",
-    "product": "53度飞天茅台",
-    "year": "当年",
-    "spec": "500ml"
+    "name": "酱酒界酱酒行情监测中心",
+    "enabled": true,
+    "parserType": "jiangjiujie_moutai_2026",
+    "url": "https://www.jiangjiujie.com/quote/product.php",
+    "bottleHistoryUrl": "https://www.jiangjiujie.com/quote/price-htm-itemid-36.html",
+    "caseHistoryUrl": "https://www.jiangjiujie.com/quote/price-htm-itemid-37.html",
+    "product": "2026年飞天茅台 53度 500ml",
+    "bottlePricePattern": "2026年飞天茅台（散）.*?￥\\s*([0-9]+(?:\\.[0-9]+)?)",
+    "casePricePattern": "2026年飞天茅台\\(原\\).*?￥\\s*([0-9]+(?:\\.[0-9]+)?)",
+    "bottleDatePattern": "2026年飞天茅台（散）.*?(\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2})",
+    "caseDatePattern": "2026年飞天茅台\\(原\\).*?(\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2})"
   }
 ]
