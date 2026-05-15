@@ -1,32 +1,32 @@
 {
-  "updatedAt": "2026-05-15 02:21:47",
+  "updatedAt": "2026-05-15 23:39:55",
   "stock": {
-    "success": true,
-    "source": "akshare",
-    "updatedAt": "2026-05-15 02:21:41",
-    "message": "股价和估值数据更新成功",
+    "success": false,
+    "source": "tushare/akshare",
+    "updatedAt": "2026-05-15 23:39:51",
+    "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
     "records": 3965
   },
   "winePrice": {
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-05-15 02:21:45",
+    "updatedAt": "2026-05-15 23:39:53",
     "message": "酒价更新成功 1 个来源",
-    "records": 1
+    "records": 2
   },
   "financialReports": {
     "success": true,
     "source": "贵州茅台官网",
-    "updatedAt": "2026-05-15 02:21:47",
+    "updatedAt": "2026-05-15 23:39:55",
     "message": "财报列表更新成功",
     "records": 7
   },
   "summary": {
     "stock": {
-      "success": true,
+      "success": false,
       "script": "update_stock_data.py",
-      "message": "ok"
+      "message": "failed with code 1"
     },
     "winePrice": {
       "success": true,
