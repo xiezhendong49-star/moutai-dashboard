@@ -125,6 +125,10 @@ def parse_jiangjiujie_moutai_2026(source: dict) -> dict:
         case_date = pick(source.get("caseDatePattern"), html)
     if bottle_price is None and case_price is None:
         raise RuntimeError(f"{source.get('name')} 未匹配到散瓶或原箱价格")
+    if bottle_price is not None and case_price is not None and case_price < bottle_price:
+        raise RuntimeError(
+            f"{source.get('name')} 价格校验失败：原箱价 {case_price} 低于散瓶价 {bottle_price}"
+        )
 
     published_at = bottle_date or case_date or datetime.now().strftime("%Y-%m-%d")
     return {
