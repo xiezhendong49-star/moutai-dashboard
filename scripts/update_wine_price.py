@@ -9,10 +9,10 @@ from __future__ import annotations
 import json
 import re
 import urllib.request
-from datetime import datetime
+from datetime import datetime, timedelta
 from importlib import import_module
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -101,48 +101,73 @@ def html_to_text(html: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html))
 
 
-def latest_history_price(url: str) -> Tuple[Optional[int], Optional[str]]:
+def history_prices(url: str) -> dict[str, int]:
     text = html_to_text(fetch_text(url))
     matches = re.findall(
         r"￥\s*([0-9]+(?:\.[0-9]+)?)\s+500ml\s+53度\s+瓶\s+(\d{4}-\d{2}-\d{2})",
         text,
         re.S,
     )
-    if not matches:
-        return None, None
-    price, date = matches[0]
-    return parse_price(price), date
+    prices = {}
+    for price, date in matches:
+        prices.setdefault(date, parse_price(price))
+    return prices
 
 
-def parse_jiangjiujie_moutai_2026(source: dict) -> dict:
-    bottle_price, bottle_date = latest_history_price(source["bottleHistoryUrl"])
-    case_price, case_date = latest_history_price(source["caseHistoryUrl"])
-    if bottle_price is None and case_price is None:
+def recent_dates(dates: set[str], days: int) -> list[str]:
+    parsed = []
+    for date in dates:
+        try:
+            parsed.append(datetime.strptime(date, "%Y-%m-%d").date())
+        except ValueError:
+            continue
+    if not parsed:
+        return sorted(dates)[-days:]
+    latest = max(parsed)
+    cutoff = latest - timedelta(days=days - 1)
+    return [d.isoformat() for d in sorted(parsed) if d >= cutoff]
+
+
+def parse_jiangjiujie_moutai_2026(source: dict) -> list[dict]:
+    bottle_prices = history_prices(source["bottleHistoryUrl"])
+    case_prices = history_prices(source["caseHistoryUrl"])
+    if not bottle_prices and not case_prices:
         html = fetch_text(source["url"])
         bottle_price = parse_price(pick(source.get("bottlePricePattern"), html))
         case_price = parse_price(pick(source.get("casePricePattern"), html))
         bottle_date = pick(source.get("bottleDatePattern"), html)
         case_date = pick(source.get("caseDatePattern"), html)
-    if bottle_price is None and case_price is None:
-        raise RuntimeError(f"{source.get('name')} 未匹配到散瓶或原箱价格")
-    if bottle_price is not None and case_price is not None and case_price < bottle_price:
-        raise RuntimeError(
-            f"{source.get('name')} 价格校验失败：原箱价 {case_price} 低于散瓶价 {bottle_price}"
-        )
+        published_at = bottle_date or case_date or datetime.now().strftime("%Y-%m-%d")
+        bottle_prices = {published_at[:10]: bottle_price} if bottle_price is not None else {}
+        case_prices = {published_at[:10]: case_price} if case_price is not None else {}
 
-    published_at = bottle_date or case_date or datetime.now().strftime("%Y-%m-%d")
-    return {
-        "date": published_at[:10],
-        "product": source.get("product", "2026年飞天茅台 53度 500ml"),
-        "bottlePrice": bottle_price,
-        "casePrice": case_price,
-        "source": source.get("name"),
-        "sourceUrl": source.get("url"),
-        "publishedAt": published_at,
-        "updatedAt": now_text(),
-        "verified": True,
-        "sample": False,
-    }
+    dates = recent_dates(set(bottle_prices) | set(case_prices), int(source.get("historyLimitDays", 7)))
+    if not dates:
+        raise RuntimeError(f"{source.get('name')} 未匹配到散瓶或原箱价格")
+
+    rows = []
+    for date in dates:
+        bottle_price = bottle_prices.get(date)
+        case_price = case_prices.get(date)
+        if bottle_price is not None and case_price is not None and case_price < bottle_price:
+            raise RuntimeError(
+                f"{source.get('name')} 价格校验失败：{date} 原箱价 {case_price} 低于散瓶价 {bottle_price}"
+            )
+        rows.append(
+            {
+                "date": date,
+                "product": source.get("product", "2026年飞天茅台 53度 500ml"),
+                "bottlePrice": bottle_price,
+                "casePrice": case_price,
+                "source": source.get("name"),
+                "sourceUrl": source.get("url"),
+                "publishedAt": date,
+                "updatedAt": now_text(),
+                "verified": True,
+                "sample": False,
+            }
+        )
+    return rows
 
 
 def parse_html_regex(source: dict) -> dict:
@@ -185,6 +210,12 @@ def upsert(rows: list[dict], row: dict) -> list[dict]:
     return sorted(output, key=lambda x: x.get("date", ""))
 
 
+def upsert_many(rows: list[dict], new_rows: list[dict]) -> list[dict]:
+    for row in new_rows:
+        rows = upsert(rows, row)
+    return rows
+
+
 def main() -> int:
     DATA_DIR.mkdir(exist_ok=True)
     sources = read_json(SOURCES_FILE, [])
@@ -201,7 +232,7 @@ def main() -> int:
     for source in enabled:
         try:
             if source.get("parserType") == "jiangjiujie_moutai_2026":
-                rows = upsert(rows, parse_jiangjiujie_moutai_2026(source))
+                rows = upsert_many(rows, parse_jiangjiujie_moutai_2026(source))
             elif source.get("parserType") == "html_regex":
                 rows = upsert(rows, parse_html_regex(source))
             else:
