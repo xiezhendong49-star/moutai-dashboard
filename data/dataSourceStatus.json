@@ -4,8 +4,45 @@
     "success": true,
     "source": "akshare",
     "updatedAt": "2026-05-17 23:43:10",
-    "message": "股价和估值数据更新成功",
-    "records": 3965
+    "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
+    "records": 3965,
+    "valuationFields": {
+      "source": "akshare price only",
+      "filled": false,
+      "message": "AkShare 当前未补齐估值字段",
+      "fields": {
+        "pe": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        },
+        "peTtm": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        },
+        "pb": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        },
+        "dividendYield": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        },
+        "dividendYieldTtm": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        },
+        "totalMarketCap": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        }
+      }
+    }
   },
   "winePrice": {
     "success": true,
@@ -42,7 +79,7 @@
     "stock": {
       "success": true,
       "script": "update_stock_data.py",
-      "message": "ok"
+      "message": "股价数据更新成功；AkShare 当前未补齐估值字段"
     },
     "winePrice": {
       "success": true,
