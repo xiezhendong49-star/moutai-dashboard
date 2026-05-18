@@ -112,7 +112,9 @@ python scripts/update_stock_data.py
 python3 scripts/update_stock_data.py
 ```
 
-未配置 `TUSHARE_TOKEN` 时，脚本会优先用 AkShare 拉取 `600519` 日线行情；如果 AkShare 暂时只能返回开高低收、成交量和成交额，PE、PE TTM、PB、股息率、市值会保留为空，不影响股价数据写入。配置 `TUSHARE_TOKEN` 后，脚本会优先使用 Tushare，并尽量补齐 PE、PE TTM、PB、股息率和市值。
+未配置 `TUSHARE_TOKEN` 时，脚本会优先用 AkShare 拉取 `600519` 日线行情；AkShare 当前只作为股价兜底来源，PE、PE TTM、PB、股息率、市值可能保留为空，不影响股价数据写入。配置 `TUSHARE_TOKEN` 后，脚本会优先使用 Tushare，并通过 `daily_basic` 尽量补齐 PE、PE TTM、PB、股息率和总市值。
+
+如果需要完整的 PE/PB/市值分析，请在本地 `.env` 或 GitHub Actions Secret 中配置 `TUSHARE_TOKEN`。`scripts/update_stock_data.py` 每次运行后会自动执行 `scripts/audit_data_quality.py`，并把估值字段完整率写入 `data/dataQualityReport.json` 和 `data/dataSourceStatus.json`。
 
 ## 一键更新数据
 
