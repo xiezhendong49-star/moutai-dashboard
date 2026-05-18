@@ -16,6 +16,7 @@
 - 基于 EPS、利润增速、目标 PE、酒价状态和安全边际的情景推演
 - 自动读取 `data/stockDaily.json`、`data/winePrices.json`、`data/financialReports.json`、`data/events.json`
 - 展示数据源状态和失败原因
+- 展示“数据更新公告”，用于确认页面是否读取了最近一次自动更新结果
 
 ## 数据读取优先级
 
@@ -28,7 +29,9 @@
 5. 如果 `data` 目录没有任何有效数据，再读取浏览器 `localStorage`。
 6. 如果 `localStorage` 也没有，最后使用 `seed-data.js`。
 
-`data/dataSourceStatus.json` 会单独读取，读取失败不会影响页面打开。
+`data/dataSourceStatus.json` 和 `data/updateLog.json` 会单独读取，读取失败不会影响页面打开。`data/updateLog.json` 为空时，页面会显示“暂无更新日志”。
+
+`data/dataQualityReport.json` 保存数据质量审计结果，重点检查股价估值字段完整率、酒价真实来源点与股价日期对齐样本数，以及财报核心字段可用数量。运行 `python3 scripts/audit_data_quality.py` 可单独生成该报告；`python3 scripts/update_all.py` 会在数据更新后自动执行审计。
 
 页面顶部会单独展示股价数据口径。正常读取到 `data/stockDaily.json` 后，应看到类似：
 
@@ -130,6 +133,28 @@ python scripts/update_all.py
 第一次运行时，如果没有配置酒价来源，`update_wine_price.py` 会显示 `skipped`。这是正常现象，不代表整个更新失败。
 
 运行后可查看 `data/dataSourceStatus.json` 中的 `summary`、`stock`、`winePrice`、`financialReports` 字段确认每个数据源的成功、失败或跳过原因。
+
+## 数据更新公告
+
+页面顶部核心指标下方有“数据更新公告”模块，用来判断图表看起来没变化时，项目是否已经读取了最新数据。
+
+`data/updateLog.json` 保存最近 30 条更新日志，每条包含：
+
+- `updatedAt`：脚本运行或数据接入时间。
+- `title`、`summary`、`changes`：本次更新说明。
+- `dataStats`：winePrices、estimated=true、真实展示点、sourcePoints 和 events 条数。
+- `latestData`：最新真实酒价日期、最新真实酒价、最新股价日期、最新财报期。
+- `status`：`success`、`no_change` 或 `failed`。
+
+页面顶部还会显示：
+
+```text
+数据更新时间：2026-05-15 18:30:00｜当前数据源：data/*.json｜状态：真实数据已加载
+```
+
+如果读取不到 `data/*.json`，会提示“当前使用演示数据，未读取到 data/*.json”。如果酒价抓取失败或当天没有新报价，会提示“今日酒价未更新，当前使用最近一次成功数据”。
+
+单独运行 `scripts/update_wine_price.py` 会追加一条酒价更新日志；运行 `scripts/update_all.py` 时会抑制子脚本日志，只追加一条汇总更新日志，避免同一次自动更新产生重复公告。成功、失败和无新增数据都会写日志；日志最多保留最近 30 条。日志写入失败不会影响主数据文件，抓取失败也不会覆盖旧数据。
 
 ## GitHub Actions 自动更新
 
