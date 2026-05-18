@@ -1,0 +1,109 @@
+{
+  "updatedAt": "2026-05-18 10:00:00",
+  "stock": {
+    "records": 3965,
+    "dateRange": {
+      "start": "2010-01-04",
+      "end": "2026-05-15"
+    },
+    "latestDate": "2026-05-15",
+    "fieldCompleteness": {
+      "close": {
+        "field": "close",
+        "available": 3965,
+        "total": 3965,
+        "rate": 1.0
+      },
+      "pe": {
+        "field": "pe",
+        "available": 0,
+        "total": 3965,
+        "rate": 0.0
+      },
+      "peTtm": {
+        "field": "peTtm",
+        "available": 0,
+        "total": 3965,
+        "rate": 0.0
+      },
+      "pb": {
+        "field": "pb",
+        "available": 0,
+        "total": 3965,
+        "rate": 0.0
+      },
+      "dividendYield": {
+        "field": "dividendYield",
+        "available": 0,
+        "total": 3965,
+        "rate": 0.0
+      },
+      "totalMarketCap": {
+        "field": "totalMarketCap",
+        "available": 0,
+        "total": 3965,
+        "rate": 0.0
+      }
+    },
+    "peTtmEnoughForFormalPercentile": false
+  },
+  "winePrice": {
+    "displayRecords": 9028,
+    "sourcePointRecords": 83,
+    "estimatedTrendRecords": 8960,
+    "realDisplayRecords": 68,
+    "matchedStockDateRecords": 37,
+    "matchedStockDates": [
+      "2010-12-31",
+      "2011-12-01",
+      "2012-12-31",
+      "2013-03-01",
+      "2013-12-31",
+      "2014-12-31",
+      "2015-12-31",
+      "2016-06-01",
+      "2019-08-01",
+      "2019-12-31",
+      "2020-03-17",
+      "2020-12-31",
+      "2022-07-01",
+      "2024-04-03",
+      "2024-04-10",
+      "2024-06-14",
+      "2024-07-01",
+      "2024-09-20",
+      "2024-09-25",
+      "2024-11-01",
+      "2024-11-20",
+      "2024-12-27",
+      "2025-02-25",
+      "2025-06-25",
+      "2025-10-28",
+      "2025-12-04",
+      "2025-12-12",
+      "2026-03-31",
+      "2026-04-01",
+      "2026-04-15",
+      "2026-05-07",
+      "2026-05-08",
+      "2026-05-11",
+      "2026-05-12",
+      "2026-05-13",
+      "2026-05-14",
+      "2026-05-15"
+    ],
+    "enoughForFormalCorrelation": true
+  },
+  "financialReports": {
+    "records": 7,
+    "epsAvailable": 0,
+    "revenueAvailable": 0,
+    "netProfitAvailable": 0
+  },
+  "events": {
+    "records": 11
+  },
+  "warnings": [
+    "估值字段不足，暂不输出正式 PE 分位"
+  ]
+}

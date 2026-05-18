@@ -6,6 +6,7 @@
     financialReports: "data/financialReports.json",
     events: "data/events.json",
     dataSourceStatus: "data/dataSourceStatus.json",
+    dataQualityReport: "data/dataQualityReport.json",
     updateLog: "data/updateLog.json",
   };
 
@@ -32,6 +33,7 @@
 
   window.MOUTAI_DATA_SOURCE_STATUS = {
     ...status,
+    dataQualityReport: loaded.dataQualityReport.data && !Array.isArray(loaded.dataQualityReport.data) ? loaded.dataQualityReport.data : null,
     updateLog,
     updateLogError: loaded.updateLog.error,
   };
@@ -44,6 +46,7 @@
     financialReports: Array.isArray(loaded.financialReports.data) && loaded.financialReports.data.length ? loaded.financialReports.data : (seed.financialReports || []),
     events: Array.isArray(loaded.events.data) && loaded.events.data.length ? loaded.events.data : (seed.events || []),
     dataSourceStatus: Object.keys(status).length ? status : (seed.dataSourceStatus || null),
+    dataQualityReport: loaded.dataQualityReport.data && !Array.isArray(loaded.dataQualityReport.data) ? loaded.dataQualityReport.data : (seed.dataQualityReport || null),
     updateLog,
   };
 
@@ -134,6 +137,46 @@
     `;
   }
 
+  function renderDataQualityAudit() {
+    const report = loaded.dataQualityReport.data && !Array.isArray(loaded.dataQualityReport.data) ? loaded.dataQualityReport.data : null;
+    if (!report) return;
+    const panel = document.getElementById("dataQualityPanel");
+    const fieldCompleteness = report.stock?.fieldCompleteness || {};
+    const wineStockMatchedDates = report.winePrice?.matchedStockDateRecords ?? 0;
+    const peTtmAvailable = fieldCompleteness.peTtm?.available ?? 0;
+    const rows = [
+      ["PE TTM 完整率", completenessText(fieldCompleteness.peTtm)],
+      ["PB 完整率", completenessText(fieldCompleteness.pb)],
+      ["股息率完整率", completenessText(fieldCompleteness.dividendYield)],
+      ["市值完整率", completenessText(fieldCompleteness.totalMarketCap)],
+      ["酒价股价可对齐样本数", `${wineStockMatchedDates} 条`],
+    ];
+    if (peTtmAvailable < 30) rows.push(["PE 分位审计", "估值字段不足，暂不输出正式 PE 分位"]);
+    if (wineStockMatchedDates < 5) rows.push(["相关性审计", "真实有效样本不足，暂不输出正式相关性判断"]);
+    const html = rows.map(([label, value]) => `<div class="note"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
+    if (panel && !panel.querySelector("[data-quality-audit='true']")) {
+      panel.insertAdjacentHTML("afterbegin", `<div data-quality-audit="true">${html}</div>`);
+    }
+    const pePercentile = document.getElementById("pePercentile");
+    if (pePercentile && peTtmAvailable < 30) pePercentile.textContent = "--";
+    const relationshipPanel = document.getElementById("relationshipPanel");
+    if (relationshipPanel && wineStockMatchedDates < 5) {
+      relationshipPanel.innerHTML = `
+        <div class="metric"><span>有效样本</span><strong>${wineStockMatchedDates} 条</strong></div>
+        <div class="metric"><span>相关系数</span><strong>真实有效样本不足，暂不输出正式相关性判断</strong></div>
+        <div class="metric"><span>当前关系</span><strong>真实有效样本不足，暂不输出正式相关性判断</strong></div>
+        <div class="metric"><span>计算口径</span><strong>estimated=false && verified=true && sample=false</strong></div>
+      `;
+    }
+  }
+
+  function completenessText(item) {
+    if (!item) return "--";
+    const rate = Number(item.rate);
+    const percent = Number.isFinite(rate) ? `${(rate * 100).toFixed(1)}%` : "--";
+    return `${percent}｜${item.available ?? 0}/${item.total ?? 0}`;
+  }
+
   function injectUpdateLogStyles() {
     if (document.getElementById("updateLogInlineStyles")) return;
     const style = document.createElement("style");
@@ -158,4 +201,6 @@
 
   injectUpdateLogStyles();
   renderUpdateLog();
+  setTimeout(renderDataQualityAudit, 0);
+  setTimeout(renderDataQualityAudit, 300);
 })();

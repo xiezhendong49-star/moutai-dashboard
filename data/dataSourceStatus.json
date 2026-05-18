@@ -56,5 +56,19 @@
       "script": "update_financial_reports.py",
       "message": "ok"
     }
+  },
+  "dataQuality": {
+    "success": true,
+    "updatedAt": "2026-05-18 10:00:00",
+    "reportFile": "data/dataQualityReport.json",
+    "peTtmAvailable": 0,
+    "peTtmCompleteness": 0.0,
+    "pbCompleteness": 0.0,
+    "dividendYieldCompleteness": 0.0,
+    "totalMarketCapCompleteness": 0.0,
+    "wineStockMatchedDates": 37,
+    "warnings": [
+      "估值字段不足，暂不输出正式 PE 分位"
+    ]
   }
 }
