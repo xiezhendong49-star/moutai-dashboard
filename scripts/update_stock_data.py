@@ -231,7 +231,7 @@ def load_from_akshare(symbol: str, start_date: str) -> list[dict]:
         indicator = None
 
     indicator_map = {}
-    if indicator is not None and not empty:
+    if indicator is not None and not indicator.empty:
         for _, r in indicator.iterrows():
             try:
                 date = normalize_date(r.get("trade_date") or r.get("日期") or r.get("date"))
@@ -251,9 +251,9 @@ def load_from_akshare(symbol: str, start_date: str) -> list[dict]:
             "high": finite(r.get("最高")),
             "low": finite(r.get("最低")),
             "close": finite(r.get("收盘")),
-            "pctChange": finite(r.get("涊跌幅")),
+            "pctChange": finite(r.get("涨跌幅")),
             "volume": finite(r.get("成交量")),
-            "amount": finite(r.get("成交颅")),
+            "amount": finite(r.get("成交额")),
             "pe": finite(ind.get("pe") if hasattr(ind, "get") else None),
             "peTtm": finite(ind.get("pe_ttm") if hasattr(ind, "get") else None),
             "pb": finite(ind.get("pb") if hasattr(ind, "get") else None),
@@ -286,7 +286,7 @@ def main() -> int:
             rows = load_from_akshare(symbol, start_date)
             source = "akshare"
         if not rows:
-            raise RuntimeError("没有获取到可写入的股价数据�)
+            raise RuntimeError("没有获取到可写入的股价数据")
         write_json(STOCK_FILE, rows)
         message = "股价和估值数据更新成功" if source == "tushare" else "股价数据更新成功；AkShare 当前未补齐估值字段"
         update_status(True, message, len(rows), source, rows)
