@@ -15,6 +15,7 @@
         </div>
         <div class="toolbar-actions">
           <button id="resetData" type="button">恢复演示数据</button>
+          <button id="clearLocalCache" type="button">清除本地缓存并重读真实数据</button>
           <button id="exportData" type="button">导出JSON</button>
           <select id="importType" aria-label="导入类型">
             <option value="winePrices">酒价</option>
@@ -32,6 +33,8 @@
       <section class="notice">
         这是研究型看板，不是交易建议。默认核心计算排除 sample 数据；演示插值只用于走势观察，不参与 PE、相关性和预测。
       </section>
+      <section id="updateTimestampBadge" class="update-timestamp" aria-live="polite"></section>
+      <section id="stockDataBanner" class="source-banner" aria-live="polite"></section>
 
       <section class="ticker-grid seven">
         <article><label>最新散瓶价</label><strong id="spotPrice">--</strong><span id="spotDelta">--</span></article>
@@ -43,12 +46,20 @@
         <article><label>当前判断</label><strong id="actionSignal">--</strong><span id="actionReason">--</span></article>
       </section>
 
+      <section class="update-log-card" aria-labelledby="updateLogTitle">
+        <div class="update-log-head">
+          <h2 id="updateLogTitle">数据更新公告</h2>
+          <span id="updateLogStatus" class="update-log-status neutral">读取中</span>
+        </div>
+        <div id="updateLogPanel"></div>
+      </section>
+
       <section class="workspace">
         <article class="chart-panel">
           <div class="chart-head">
             <div>
               <h2 id="mainChartTitle">酒价 vs 股价趋势</h2>
-              <p id="mainChartSubtitle">支持双轴和涨跌幅归一化；tooltip 展示来源和 sample 状态。</p>
+              <p id="mainChartSubtitle">支持双轘和涨跌幅归一化；tooltip 展示来源和 sample 状态。</p>
             </div>
             <div class="switches">
               <button class="active" data-chart="price" type="button">酒价/股价</button>
@@ -68,34 +79,64 @@
             <button data-range="5y" type="button">5年</button>
             <button data-range="10y" type="button">10年</button>
             <button class="active" data-range="all" type="button">全部</button>
-            <button class="active" data-mode="dual" type="button">双轴</button>
+            <button class="active" data-mode="dual" type="button">双轘</button>
             <button data-mode="indexed" type="button">涨跌幅</button>
           </div>
 
           <div id="chartRoot" class="chart-root"></div>
           <div id="chartLegend" class="legend"></div>
           <div class="mini-chart-grid">
-            <div class="mini-chart-card"><h3>PE估值小图</h3><div id="miniPeChart" class="mini-chart"></div></div>
-            <div class="mini-chart-card"><h3>酒价-股价背离小图</h3><div id="miniDivergenceChart" class="mini-chart"></div></div>
-            <div class="mini-chart-card"><h3>财务趋势小图</h3><div id="miniFinancialChart" class="mini-chart"></div></div>
+            <div class="mini-chart-card">
+              <h3>PE估值小图</h3>
+              <div id="miniPeChart" class="mini-chart"></div>
+            </div>
+            <div class="mini-chart-card">
+              <h3>酒价-股价背离小图</h3>
+              <div id="miniDivergenceChart" class="mini-chart"></div>
+            </div>
+            <div class="mini-chart-card">
+              <h3>财务趋势小图</h3>
+              <div id="miniFinancialChart" class="mini-chart"></div>
+            </div>
           </div>
         </article>
 
         <aside class="side-panel">
-          <section><h3>数据质量</h3><div id="dataQualityPanel" class="stack"></div></section>
-          <section><h3>数据源状态</h3><div id="dataSourcePanel" class="stack"></div></section>
-          <section><h3>事件与异动</h3><div id="eventList" class="stack"></div></section>
+          <section>
+            <h3>数据质量</h3>
+            <div id="dataQualityPanel" class="stack"></div>
+          </section>
+          <section>
+            <h3>数据源状态</h3>
+            <div id="dataSourcePanel" class="stack"></div>
+          </section>
+          <section>
+            <h3>事件与异动</h3>
+            <div id="eventList" class="stack"></div>
+          </section>
         </aside>
       </section>
 
       <section class="bottom-grid">
-        <article class="panel"><h3>关系分析</h3><div id="relationshipPanel" class="metric-grid"></div></article>
-        <article class="panel"><h3>估值与隐含增速</h3><div id="valuationPanel" class="metric-grid"></div></article>
+        <article class="panel">
+          <h3>关系分析</h3>
+          <div id="relationshipPanel" class="metric-grid"></div>
+        </article>
+        <article class="panel">
+          <h3>估值与隐含增速</h3>
+          <div id="valuationPanel" class="metric-grid"></div>
+        </article>
       </section>
 
       <section class="bottom-grid">
-        <article class="panel"><h3>财务数据看板</h3><div id="financialPanel" class="metric-grid"></div></article>
-        <article class="panel"><h3>业务结构看板</h3><div id="businessPanel" class="metric-grid"></div></article>
+        <article class="panel">
+          <h3>财务数据看板</h3>
+          <div id="financialPanel" class="metric-grid"></div>
+        </article>
+        <article class="panel">
+          <h3>业务结构看板</h3>
+          <div id="businessPanel" class="metric-grid"></div>
+        </article>
       </section>
 
       <section class="bottom-grid">
@@ -117,7 +158,15 @@
             <label>未来净利增速%<input name="growthRate" type="number" step="0.1" /></label>
             <label>目标PE<input name="targetPe" type="number" step="0.1" /></label>
             <label>安全边际%<input name="marginOfSafety" type="number" step="1" /></label>
-            <label>酒价状态<select name="winePriceState"><option value="below1600">低于1600</option><option value="1600-1650">1600-1650</option><option value="1650-1700">1650-1700</option><option value="above1700">高于1700</option></select></label>
+            <label>
+              酒价状态
+              <select name="winePriceState">
+                <option value="below1600">低于1600</option>
+                <option value="1600-1650">1600-1650</option>
+                <option value="1650-1700">1650-1700</option>
+                <option value="above1700">高于1700</option>
+              </select>
+            </label>
             <button type="submit">更新推演</button>
           </form>
           <div id="forecastPanel" class="scenario-list"></div>
@@ -125,8 +174,14 @@
       </section>
 
       <section class="bottom-grid">
-        <article class="panel"><h3>最近酒价/股价</h3><div class="table-wrap"><table><thead><tr><th>日期</th><th>散瓶</th><th>原箱</th><th>股价</th><th>PE</th><th>来源</th></tr></thead><tbody id="recentRows"></tbody></table></div></article>
-        <article class="panel"><h3>最近财报</h3><div class="table-wrap"><table><thead><tr><th>期间</th><th>营收</th><th>净利</th><th>EPS</th><th>毛利率</th><th>净利率</th></tr></thead><tbody id="reportRows"></tbody></table></div></article>
+        <article class="panel">
+          <h3>最近酒价/股价</h3>
+          <div class="table-wrap"><table><thead><tr><th>日期</th><th>散瓶</th><th>原箱</th><th>股价</th><th>PE</th><th>来源</th></tr></thead><tbody id="recentRows"></tbody></table></div>
+        </article>
+        <article class="panel">
+          <h3>最近财报</h3>
+          <div class="table-wrap"><table><thead><tr><th>期间</th><th>营收</th><th>净利</th><th>EPS</th><th>毛利率</th><th>净利率</th></tr></thead><tbody id="reportRows"></tbody></table></div>
+        </article>
       </section>
     </main>
 

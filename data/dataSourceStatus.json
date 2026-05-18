@@ -10,10 +10,26 @@
   "winePrice": {
     "success": true,
     "skipped": false,
-    "source": "configured_html_sources",
-    "updatedAt": "2026-05-17 23:43:12",
-    "message": "酒价更新成功 1 个来源",
-    "records": 2
+    "source": "historical_json + configured_html_sources",
+    "updatedAt": "2026-05-15 09:31:05",
+    "message": "已接入历史日频酒价；每日更新仅追加真实来源点",
+    "records": 9028,
+    "historyRange": {
+      "start": "2001-08-27",
+      "end": "2026-05-15"
+    },
+    "displayRecords": 9028,
+    "sourcePointRecords": 83,
+    "realRecords": 83,
+    "estimatedRecords": 8960,
+    "latestRealDate": "2026-05-15",
+    "latestRealBottlePrice": 1650,
+    "latestRealCasePrice": null,
+    "todayUpdated": true,
+    "predictionUsesRealSourcePointsOnly": true,
+    "estimatedRowsInDisplayFile": 8960,
+    "realDisplayRecords": 68,
+    "sourcePointLedgerRecords": 83
   },
   "financialReports": {
     "success": true,
@@ -30,8 +46,10 @@
     },
     "winePrice": {
       "success": true,
+      "skipped": false,
+      "failed": false,
       "script": "update_wine_price.py",
-      "message": "ok"
+      "message": "已接入历史日频酒价；每日更新仅追加真实来源点"
     },
     "financialReports": {
       "success": true,

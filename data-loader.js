@@ -1,52 +1,161 @@
 (function () {
-  const status = { mode: 'demo', message: '使用 seed-data.js 演示数据。' };
+  const files = {
+    stockDaily: "data/stockDaily.json",
+    winePrices: "data/winePrices.json",
+    winePriceSourcePoints: "data/winePriceSourcePoints.json",
+    financialReports: "data/financialReports.json",
+    events: "data/events.json",
+    dataSourceStatus: "data/dataSourceStatus.json",
+    updateLog: "data/updateLog.json",
+  };
 
-  function readJson(path) {
+  function loadJson(path) {
     try {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', path, false);
-      xhr.send(null);
-      if (xhr.status >= 200 && xhr.status < 300) return JSON.parse(xhr.responseText);
-      throw new Error(path + ' ' + xhr.status);
+      const request = new XMLHttpRequest();
+      request.open("GET", path, false);
+      request.send(null);
+      if (request.status >= 200 && request.status < 300) {
+        return { data: JSON.parse(request.responseText), error: "" };
+      }
+      return { data: null, error: `${path} ${request.status}` };
     } catch (error) {
-      status.message = 'data 目录读取失败，已回退演示数据。若使用 file:// 打开，请运行 python -m http.server 8000 后访问 http://localhost:8000。错误：' + error.message;
-      return null;
+      return { data: null, error: `${path} ${error.message}` };
     }
   }
 
-  const stockDaily = readJson('data/stockDaily.json');
-  const winePrices = readJson('data/winePrices.json');
-  const financialReports = readJson('data/financialReports.json');
-  const events = readJson('data/events.json');
-  const dataSourceStatus = readJson('data/dataSourceStatus.json');
-  const hasData = [stockDaily, winePrices, financialReports, events].some((item) => Array.isArray(item) && item.length);
+  const loaded = Object.fromEntries(Object.entries(files).map(([key, path]) => [key, loadJson(path)]));
+  const seed = window.MOUTAI_SEED || {};
+  const updateLog = Array.isArray(loaded.updateLog.data) ? loaded.updateLog.data : [];
+  const status = loaded.dataSourceStatus.data && !Array.isArray(loaded.dataSourceStatus.data)
+    ? loaded.dataSourceStatus.data
+    : {};
 
-  if (hasData) {
-    window.MOUTAI_SEED = {
-      ...(window.MOUTAI_SEED || {}),
-      stockDaily: Array.isArray(stockDaily) ? stockDaily : [],
-      winePrices: Array.isArray(winePrices) ? winePrices : [],
-      financialReports: Array.isArray(financialReports) ? financialReports : [],
-      events: Array.isArray(events) ? events : [],
-      dataSourceStatus: dataSourceStatus || null,
-    };
-    status.mode = 'real';
-    status.message = '使用 data/*.json 数据；如果数组为空，页面会继续展示演示框架。';
+  window.MOUTAI_DATA_SOURCE_STATUS = {
+    ...status,
+    updateLog,
+    updateLogError: loaded.updateLog.error,
+  };
+
+  window.MOUTAI_SEED = {
+    ...seed,
+    stockDaily: Array.isArray(loaded.stockDaily.data) && loaded.stockDaily.data.length ? loaded.stockDaily.data : (seed.stockDaily || []),
+    winePrices: Array.isArray(loaded.winePrices.data) && loaded.winePrices.data.length ? loaded.winePrices.data : (seed.winePrices || []),
+    winePriceSourcePoints: Array.isArray(loaded.winePriceSourcePoints.data) ? loaded.winePriceSourcePoints.data : (seed.winePriceSourcePoints || []),
+    financialReports: Array.isArray(loaded.financialReports.data) && loaded.financialReports.data.length ? loaded.financialReports.data : (seed.financialReports || []),
+    events: Array.isArray(loaded.events.data) && loaded.events.data.length ? loaded.events.data : (seed.events || []),
+    dataSourceStatus: Object.keys(status).length ? status : (seed.dataSourceStatus || null),
+    updateLog,
+  };
+
+  function latestLog() {
+    return [...updateLog].filter(Boolean).sort((a, b) => String(a.updatedAt || "").localeCompare(String(b.updatedAt || ""))).at(-1);
   }
 
-  window.MOUTAI_DATA_LOAD_STATUS = status;
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "\"": "&quot;",
+      "'": "&#39;",
+    }[char]));
+  }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const panel = document.getElementById('dataSourcePanel');
+  function fmt(value) {
+    return value === null || value === undefined || value === "" ? "--" : String(value);
+  }
+
+  function dataStateText(log) {
+    const loadedDataCount = ["stockDaily", "winePrices", "financialReports", "events"].filter((key) => Array.isArray(loaded[key].data) && loaded[key].data.length > 0).length;
+    const failed = [status.stock, status.winePrice, status.financialReports].some((item) => item && item.success === false && !item.skipped);
+    if (!loadedDataCount) return "使用演示数据";
+    if (failed) return "部分数据读取失败";
+    if (log?.status === "no_change") return "脚本已运行但没有新增数据";
+    if (status.winePrice?.todayUpdated === false) return "今日数据未更新";
+    return "真实数据已加载";
+  }
+
+  function renderUpdateLog() {
+    const log = latestLog();
+    const badge = document.getElementById("updateTimestampBadge");
+    const panel = document.getElementById("updateLogPanel");
+    const stateTag = document.getElementById("updateLogStatus");
+    const stateText = dataStateText(log);
+    if (badge) {
+      badge.className = `update-timestamp ${stateText === "使用演示数据" ? "demo" : ""} ${stateText.includes("失败") || stateText.includes("未更新") ? "warning" : ""}`.trim();
+      badge.textContent = stateText === "使用演示数据"
+        ? "当前使用演示数据，未读取到 data/*.json"
+        : `数据更新时间：${log?.updatedAt || status.updatedAt || "--"}｜当前数据源：data/*.json｜状态：${stateText}`;
+    }
     if (!panel) return;
-    const source = dataSourceStatus || {};
-    const row = (title, body) => '<div class="note-card"><strong>' + title + '</strong><span>' + body + '</span></div>';
-    panel.innerHTML = [
-      row('当前数据模式', status.mode === 'real' ? '真实数据优先' : '演示数据'),
-      row('加载说明', status.message),
-      row('股价数据', source.stock ? source.stock.updatedAt + '｜' + source.stock.message : '--'),
-      row('酒价数据', source.winePrice ? source.winePrice.updatedAt + '｜' + source.winePrice.message : '--'),
-      row('财报数据', source.financialReports ? source.financialReports.updatedAt + '｜' + source.financialReports.message : '--')
-    ].join('');
-  });
+    if (!log) {
+      if (stateTag) {
+        stateTag.className = "update-log-status neutral";
+        stateTag.textContent = "暂无日志";
+      }
+      panel.innerHTML = '<p class="update-log-summary">暂无更新日志。</p>';
+      return;
+    }
+    const statusClass = log.status === "failed" ? "failed" : log.status === "no_change" ? "neutral" : "success";
+    if (stateTag) {
+      stateTag.className = `update-log-status ${statusClass}`;
+      stateTag.textContent = log.status === "failed" ? "失败" : log.status === "no_change" ? "无新增数据" : "成功";
+    }
+    const stats = log.dataStats || {};
+    const latestData = log.latestData || {};
+    const wineStatus = status.winePrice || {};
+    const changes = Array.isArray(log.changes) && log.changes.length
+      ? log.changes.map((item) => `<li>${escapeHtml(item)}</li>`).join("")
+      : "<li>本次运行没有记录明细。</li>";
+    const note = wineStatus.success === false || wineStatus.todayUpdated === false
+      ? "今日酒价未更新，当前使用最近一次成功数据。"
+      : log.status === "no_change"
+        ? "脚本已运行，但没有发现新数据，当前使用最近一次成功数据。"
+        : "本次更新日志已加载，可通过更新时间和关键数据变化确认页面读取的是最新数据。";
+    panel.innerHTML = `
+      <div class="update-log-main">
+        <div>
+          <strong>${escapeHtml(log.updatedAt || "--")}｜${escapeHtml(log.title || "数据更新")}</strong>
+          <p class="update-log-summary">${escapeHtml(log.summary || "暂无更新摘要。")}</p>
+          <ul class="update-log-list">${changes}</ul>
+          <p class="update-log-note">${escapeHtml(note)}</p>
+        </div>
+        <div class="update-log-grid">
+          <div class="metric"><span>winePrices</span><strong>${fmt(stats.winePrices)}</strong></div>
+          <div class="metric"><span>estimated=true</span><strong>${fmt(stats.wineEstimatedPoints)}</strong></div>
+          <div class="metric"><span>真实展示点</span><strong>${fmt(stats.wineRealDisplayPoints)}</strong></div>
+          <div class="metric"><span>sourcePoints</span><strong>${fmt(stats.wineSourcePoints)}</strong></div>
+          <div class="metric"><span>events</span><strong>${fmt(stats.events)}</strong></div>
+          <div class="metric"><span>最新真实酒价</span><strong>${fmt(latestData.latestWineDate || wineStatus.latestRealDate)}｜${fmt(latestData.latestWinePrice ?? wineStatus.latestRealBottlePrice)}</strong></div>
+          <div class="metric"><span>页面数据状态</span><strong>${escapeHtml(stateText)}</strong></div>
+          <div class="metric"><span>今日酒价</span><strong>${wineStatus.todayUpdated ? "已更新" : "未更新"}</strong></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function injectUpdateLogStyles() {
+    if (document.getElementById("updateLogInlineStyles")) return;
+    const style = document.createElement("style");
+    style.id = "updateLogInlineStyles";
+    style.textContent = `
+      .update-timestamp{display:inline-flex;max-width:100%;margin-bottom:8px;border:1px solid #c8d7cb;background:#f1faf3;color:#315d43;border-radius:999px;padding:6px 11px;font-size:12px;line-height:1.35}
+      .update-timestamp.demo,.update-log-status.neutral{border-color:#d7c8aa;background:#fff8e8;color:#70552a}
+      .update-timestamp.warning,.update-log-status.failed{border-color:#e1a19a;background:#fff0ee;color:#8e2f26}
+      .update-log-card{margin-bottom:8px;border:1px solid var(--line,#ddd5c8);background:var(--panel,#fffdf8);border-radius:8px;padding:10px 12px}
+      .update-log-head,.update-log-main,.update-log-grid{display:grid;gap:8px}
+      .update-log-head{grid-template-columns:1fr auto;align-items:center;margin-bottom:8px}
+      .update-log-status{border:1px solid #c8d7cb;background:#f1faf3;color:#315d43;border-radius:999px;padding:4px 9px;font-size:12px}
+      .update-log-main{grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr)}
+      .update-log-summary{color:var(--muted,#65716a);font-size:13px;line-height:1.5}
+      .update-log-list{margin:7px 0 0;padding-left:18px;color:var(--muted,#65716a);font-size:12px;line-height:1.55}
+      .update-log-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .update-log-note{margin-top:8px;color:var(--muted,#65716a);font-size:12px;line-height:1.5}
+      @media (max-width:1100px){.update-log-main,.update-log-grid{grid-template-columns:1fr}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  injectUpdateLogStyles();
+  renderUpdateLog();
 })();

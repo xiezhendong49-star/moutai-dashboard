@@ -4,19 +4,25 @@
   let mode = "dual";
   let range = "all";
   let entryType = "winePrices";
+  let dataMode = "demo";
+  let loadMessage = "使用 seed-data.js 演示数据。";
+  let datasetSources = { stockDaily: "seed", winePrices: "seed", financialReports: "seed", events: "seed" };
 
   const emptyState = {
     winePrices: [],
+    winePriceSourcePoints: [],
     stockDaily: [],
     financialReports: [],
     events: [],
+    dataSourceStatus: null,
     forecastParams: { currentEps: 65.7, growthRate: 6, targetPe: 22, winePriceState: "1600-1650", marginOfSafety: 10 },
   };
-  const state = loadState();
+  let state = normalizeState(window.MOUTAI_SEED || emptyState);
 
   const $ = (id) => document.getElementById(id);
   const els = {
     error: $("errorBanner"),
+    stockDataBanner: $("stockDataBanner"),
     spotPrice: $("spotPrice"),
     spotDelta: $("spotDelta"),
     casePrice: $("casePrice"),
@@ -37,6 +43,7 @@
     chartSubtitle: $("mainChartSubtitle"),
     chartLegend: $("chartLegend"),
     dataQualityPanel: $("dataQualityPanel"),
+    dataSourcePanel: $("dataSourcePanel"),
     eventList: $("eventList"),
     relationshipPanel: $("relationshipPanel"),
     valuationPanel: $("valuationPanel"),
@@ -49,6 +56,7 @@
     reportRows: $("reportRows"),
     importType: $("importType"),
     resetData: $("resetData"),
+    clearLocalCache: $("clearLocalCache"),
     exportData: $("exportData"),
     downloadTemplate: $("downloadTemplate"),
     importData: $("importData"),
@@ -56,22 +64,107 @@
   };
 
   bind();
-  render();
+  init();
 
-  function loadState() {
-    try {
-      const saved = localStorage.getItem(storageKey);
-      if (saved) return normalizeState(JSON.parse(saved));
-    } catch {}
-    return normalizeState(window.MOUTAI_SEED || emptyState);
+  async function init() {
+    Object.assign(state, await loadState());
+    render();
   }
 
-  function normalizeState(input) {
+  async function loadState() {
+    const baseSeed = normalizeState(window.MOUTAI_SEED || emptyState, "seed-data.js");
+    const external = await loadExternalData(baseSeed);
+    if (external.hasExternalData) return external.state;
+
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        dataMode = "local";
+        loadMessage = "使用浏览器本地保存/导入的数据。";
+        const localState = normalizeState(JSON.parse(saved), "localStorage");
+        datasetSources = { stockDaily: "localStorage", winePrices: "localStorage", financialReports: "localStorage", events: "localStorage" };
+        localState.meta.datasetSources = datasetSources;
+        return localState;
+      }
+    } catch (error) {
+      loadMessage = `localStorage 读取失败，已尝试降级：${error.message}`;
+    }
+
+    dataMode = "demo";
+    loadMessage = "data 目录和 localStorage 都没有有效数据，使用 seed-data.js 演示数据。";
+    datasetSources = { stockDaily: "seed", winePrices: "seed", financialReports: "seed", events: "seed" };
+    baseSeed.meta.datasetSources = datasetSources;
+    return baseSeed;
+  }
+
+  async function loadExternalData(baseSeed) {
+    datasetSources = { stockDaily: "seed", winePrices: "seed", financialReports: "seed", events: "seed" };
+    const files = await Promise.all([
+      fetchJsonSafe("data/stockDaily.json"),
+      fetchJsonSafe("data/winePrices.json"),
+      fetchJsonSafe("data/winePriceSourcePoints.json"),
+      fetchJsonSafe("data/financialReports.json"),
+      fetchJsonSafe("data/events.json"),
+      fetchJsonSafe("data/dataSourceStatus.json"),
+    ]);
+    const [stockDaily, winePrices, winePriceSourcePoints, financialReports, events, dataSourceStatus] = files;
+    const stateFromData = normalizeState({
+      stockDaily: pickDataSet(stockDaily.data, baseSeed.stockDaily, "stockDaily"),
+      winePrices: pickDataSet(winePrices.data, baseSeed.winePrices, "winePrices"),
+      winePriceSourcePoints: Array.isArray(winePriceSourcePoints.data) ? winePriceSourcePoints.data : baseSeed.winePriceSourcePoints,
+      financialReports: pickDataSet(financialReports.data, baseSeed.financialReports, "financialReports"),
+      events: pickDataSet(events.data, baseSeed.events, "events"),
+      dataSourceStatus: dataSourceStatus.data && !Array.isArray(dataSourceStatus.data) ? dataSourceStatus.data : baseSeed.dataSourceStatus,
+      forecastParams: baseSeed.forecastParams,
+    }, "data/*.json + seed fallback");
+
+    const hasExternalData = Object.values(datasetSources).some((source) => source === "data");
+    stateFromData.meta.datasetSources = datasetSources;
+    if (hasExternalData) {
+      dataMode = "external";
+      loadMessage = "优先读取 data/*.json；空数组、读取失败或格式错误的数据集已分别回退到 seed-data.js。";
+    } else {
+      dataMode = "demo";
+      const errors = files.filter((item) => item.error).map((item) => item.error).join("；");
+      loadMessage = errors
+        ? `data 目录未读取到有效数据，已回退演示数据。若使用 file:// 打开，请运行 python -m http.server 8000 后访问 http://localhost:8000。错误：${errors}`
+        : "data 目录暂时没有有效记录，继续检查 localStorage。";
+    }
+    return { state: stateFromData, hasExternalData };
+  }
+
+  async function fetchJson(url) {
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) throw new Error(`${url} ${response.status}`);
+    return response.json();
+  }
+
+  async function fetchJsonSafe(url) {
+    try {
+      return { data: await fetchJson(url), error: "" };
+    } catch (error) {
+      return { data: null, error: `${url} ${error.message}` };
+    }
+  }
+
+  function pickDataSet(dataRows, seedRows, key) {
+    if (Array.isArray(dataRows) && dataRows.length > 0) {
+      datasetSources[key] = "data";
+      return dataRows;
+    }
+    datasetSources[key] = "seed";
+    return Array.isArray(seedRows) ? seedRows : [];
+  }
+
+  function normalizeState(input, source = "unknown") {
     return {
       winePrices: Array.isArray(input.winePrices) ? input.winePrices : [],
+      winePriceSourcePoints: Array.isArray(input.winePriceSourcePoints) ? input.winePriceSourcePoints : [],
       stockDaily: Array.isArray(input.stockDaily) ? input.stockDaily : [],
       financialReports: Array.isArray(input.financialReports) ? input.financialReports : [],
       events: Array.isArray(input.events) ? input.events : [],
+      dataSourceStatus: input.dataSourceStatus || null,
+      meta: { source },
       forecastParams: { ...emptyState.forecastParams, ...(input.forecastParams || {}) },
     };
   }
@@ -119,10 +212,19 @@
       render();
     });
     els.resetData.addEventListener("click", () => {
-      Object.assign(state, normalizeState(window.MOUTAI_SEED || emptyState));
-      saveState();
+      dataMode = "demo";
+      loadMessage = "临时展示 seed-data.js 演示数据；不会写入 localStorage。";
+      datasetSources = { stockDaily: "seed", winePrices: "seed", financialReports: "seed", events: "seed" };
+      Object.assign(state, normalizeState(window.MOUTAI_SEED || emptyState, "seed-data.js"));
+      state.meta.datasetSources = datasetSources;
       render();
     });
+    if (els.clearLocalCache) {
+      els.clearLocalCache.addEventListener("click", () => {
+        localStorage.removeItem(storageKey);
+        location.reload();
+      });
+    }
     els.exportData.addEventListener("click", () => download("moutai-research-state.json", JSON.stringify(state, null, 2), "application/json"));
     els.downloadTemplate.addEventListener("click", () => downloadTemplate(els.importType.value));
     els.importData.addEventListener("change", async (event) => {
@@ -158,10 +260,12 @@
   function render() {
     try {
       hydrateForecastForm();
+      drawStockDataBanner();
       drawTopMetrics();
       drawChart();
       drawMiniCharts();
       drawQuality();
+      drawDataSourceStatus();
       drawEvents();
       drawRelationship();
       drawValuation();
@@ -189,7 +293,25 @@
   }
 
   function analytical(array) {
-    return sorted(array).filter((row) => row.verified === true || row.sample !== true);
+    return verifiedRows(array);
+  }
+
+  function verifiedRows(array) {
+    return sorted(array).filter((row) => row.sample === false && row.verified === true && row.estimated !== true);
+  }
+
+  function realWineRows() {
+    const sourcePoints = verifiedRows(state.winePriceSourcePoints).filter((row) => isNum(row.bottlePrice) || isNum(row.casePrice));
+    return sourcePoints.length ? sourcePoints : verifiedRows(state.winePrices).filter((row) => row.sourcePoint === true);
+  }
+
+  function displayRows(array) {
+    const verified = verifiedRows(array);
+    return verified.length ? verified : sorted(array);
+  }
+
+  function validForecastData() {
+    return realWineRows().length >= 5 && verifiedRows(state.stockDaily).length >= 5 && verifiedRows(state.financialReports).some((r) => isNum(r.eps));
   }
 
   function latest(array, key = "date") {
@@ -201,15 +323,18 @@
   }
 
   function drawTopMetrics() {
-    const wine = latest(analytical(state.winePrices)) || latest(state.winePrices);
-    const stock = latest(state.stockDaily);
-    const peValues = state.stockDaily.map((r) => r.peTtm).filter(isNum);
+    const wineRows = realWineRows();
+    const wine = latest(wineRows);
+    const stock = latest(displayRows(state.stockDaily));
+    const realPeRows = verifiedRows(state.stockDaily).filter((r) => isNum(r.peTtm) || isNum(r.peStatic));
+    const peRows = realPeRows.length ? realPeRows : state.stockDaily;
+    const peValues = peRows.map((r) => r.peTtm ?? r.peStatic).filter(isNum);
     const pe = stock?.peTtm ?? stock?.peStatic;
-    fillPrice(els.spotPrice, els.spotDelta, wine, previous(analytical(state.winePrices), wine?.date), "bottlePrice", 0, "元");
-    fillPrice(els.casePrice, els.caseDelta, wine, previous(analytical(state.winePrices), wine?.date), "casePrice", 0, "元");
-    fillPrice(els.stockPrice, els.stockDelta, stock, previous(state.stockDaily, stock?.date), "close", 2, "元");
+    fillPrice(els.spotPrice, els.spotDelta, wine, previous(wineRows, wine?.date), "bottlePrice", 0, "元");
+    fillPrice(els.casePrice, els.caseDelta, wine, previous(wineRows, wine?.date), "casePrice", 0, "元");
+    fillPrice(els.stockPrice, els.stockDelta, stock, previous(displayRows(state.stockDaily), stock?.date), "close", 2, "元");
     els.peTtm.textContent = isNum(pe) ? `${fmt(pe, 1)}x` : "--";
-    els.peNote.textContent = stock?.sample ? "样例估值" : "TTM口径";
+    els.peNote.textContent = realPeRows.length ? "真实TTM口径" : "样例估值";
     els.pePercentile.textContent = isNum(pe) && peValues.length ? `${fmt(percentile(peValues, pe), 0)}%` : "--";
     els.dividendYield.textContent = isNum(stock?.dividendYield) ? `${fmt(stock.dividendYield, 1)}%` : "--";
     const judgment = getJudgment(wine?.bottlePrice, stock?.close, pe);
@@ -281,14 +406,27 @@
     els.chartSubtitle.textContent = "双轴看绝对价格，涨跌幅模式看相对变化。";
     const wine = filterRange(sorted(state.winePrices));
     const stocks = filterRange(sorted(state.stockDaily));
-    const rows = mergeByDate(wine, stocks, (w, s) => ({ date: w?.date || s?.date, bottlePrice: w?.bottlePrice, casePrice: w?.casePrice, close: s?.close, peTtm: s?.peTtm, source: w?.source || "股价数据", sample: w?.sample || s?.sample }));
+    const rows = mergeByDate(wine, stocks, (w, s) => ({
+      date: w?.date || s?.date,
+      bottlePrice: w?.bottlePrice,
+      casePrice: w?.casePrice,
+      close: s?.close,
+      peTtm: s?.peTtm,
+      source: w?.source || "股价数据",
+      sourceUrl: w?.sourceUrl,
+      note: w?.note,
+      estimated: w?.estimated,
+      sourcePoint: w?.sourcePoint,
+      verified: w?.verified,
+      sample: w?.sample || s?.sample,
+    }));
     const series = rows.filter((r) => isNum(r.bottlePrice) || isNum(r.close));
     const leftField = mode === "indexed" ? "bottleIndex" : "bottlePrice";
     const rightField = mode === "indexed" ? "stockIndex" : "close";
     addIndexes(series, "bottlePrice", "bottleIndex");
     addIndexes(series, "close", "stockIndex");
     drawTwoLineChart(root, width, height, series, leftField, rightField, "飞天散瓶", "贵州茅台股价", "var(--gold)", "var(--blue)");
-    els.chartLegend.innerHTML = legend(["飞天散瓶", "贵州茅台股价", "事件/样例说明"]);
+    els.chartLegend.innerHTML = legend(["飞天散瓶趋势", "贵州茅台股价", "真实来源点/估算趋势点"]);
   }
 
   function drawPeChart(root, width, height) {
@@ -308,8 +446,8 @@
   }
 
   function buildDivergenceRows() {
-    const wine = analytical(state.winePrices);
-    const stocks = state.stockDaily.filter((r) => r.sample !== true || isNum(r.close));
+    const wine = realWineRows();
+    const stocks = verifiedRows(state.stockDaily);
     const rows = mergeNearest(wine, stocks).filter((r) => isNum(r.bottlePrice) && isNum(r.close));
     if (!rows.length) return [];
     const firstWine = rows[0].bottlePrice;
@@ -412,32 +550,191 @@
 
   function tooltipHtml(row) {
     const date = row.date || row.period || "--";
-    return `<strong>${date}</strong><span>酒价：${display(row.bottlePrice)} 元</span><span>股价：${display(row.close, 2)} 元</span><span>PE：${display(row.peTtm, 1)}</span><span>来源：${row.source || "--"}</span><small>${row.sample ? "样例数据" : "真实/录入数据"}</small>`;
+    const pointLabel = row.estimated === true
+      ? "估算趋势价，仅用于展示"
+      : row.estimated === false && row.verified === true
+        ? "真实来源点"
+        : row.sample ? "样例数据" : "录入数据";
+    const source = row.sourceUrl ? `<a href="${row.sourceUrl}" target="_blank" rel="noopener">${row.source || "来源链接"}</a>` : (row.source || "--");
+    return `<strong>${date}</strong><span>酒价：${display(row.bottlePrice)} 元</span><span>股价：${display(row.close, 2)} 元</span><span>PE：${display(row.peTtm, 1)}</span><span>${pointLabel}</span><span>真实来源点：${row.sourcePoint === true ? "是" : "否"}</span><span>来源：${source}</span><small>${row.note || ""}</small>`;
   }
 
   function drawQuality() {
-    const sampleCount = [...state.winePrices, ...state.stockDaily, ...state.financialReports].filter((r) => r.sample).length;
+    const allRows = [...state.winePrices, ...state.stockDaily, ...state.financialReports, ...state.events];
+    const realWineCount = realWineRows().length;
+    const estimatedWineCount = state.winePrices.filter((r) => r.estimated === true).length;
+    const sampleCount = allRows.filter((r) => r.sample).length;
+    const unverifiedCount = allRows.filter((r) => r.verified === false).length;
+    const missingSourceCount = allRows.filter((r) => !r.source).length;
     const latestUpdate = [latest(state.winePrices)?.date, latest(state.stockDaily)?.date, latest(state.financialReports, "period")?.period].filter(Boolean).sort().at(-1) || "--";
     const missingPe = state.stockDaily.filter((r) => !isNum(r.peTtm) && !isNum(r.peStatic)).length;
     const missingEps = state.financialReports.filter((r) => !isNum(r.eps)).length;
     const missingWine = state.winePrices.filter((r) => !isNum(r.bottlePrice)).length;
     els.dataQualityPanel.innerHTML = [
-      note("酒价数据", `${state.winePrices.length} 条`),
-      note("股价数据", `${state.stockDaily.length} 条`),
+      note("酒价展示数据", `${state.winePrices.length} 条`),
+      note("酒价真实来源点", `${realWineCount} 条`),
+      note("酒价估算趋势点", `${estimatedWineCount} 条`),
+      note("股价数据", `${state.stockDaily.length} 条｜${stockDataHeadline()}`),
       note("财报数据", `${state.financialReports.length} 条`),
       note("事件数据", `${state.events.length} 条`),
       note("样例数据", `${sampleCount} 条`),
+      note("未核验数据", `${unverifiedCount} 条`),
+      note("缺少来源", `${missingSourceCount} 条`),
       note("最近更新", latestUpdate),
       note("缺失检查", `PE缺${missingPe} / EPS缺${missingEps} / 酒价缺${missingWine}`),
     ].join("");
   }
+
+  function drawStockDataBanner() {
+    if (!els.stockDataBanner) return;
+    const runtime = stockRuntimeStatus();
+    const classes = ["source-banner"];
+    if (runtime.datasetSource === "seed") classes.push("demo");
+    if (runtime.datasetSource === "localStorage") classes.push("local");
+    els.stockDataBanner.className = classes.join(" ");
+    els.stockDataBanner.innerHTML = `<div><strong>股价数据：${stockDataHeadline()}</strong><span>${runtime.detail}</span></div><span>stock.success=${String(runtime.success)}｜source=${runtime.sourceCode}｜records=${runtime.records}</span>`;
+  }
+
+  function stockDataHeadline() {
+    const runtime = stockRuntimeStatus();
+    return `${runtime.typeLabel} / ${runtime.sourceLabel} / ${fmt(runtime.records, 0)}条`;
+  }
+
+  function stockRuntimeStatus() {
+    const sources = currentDatasetSources();
+    const datasetSource = sources.stockDaily || "seed";
+    const stockStatus = state.dataSourceStatus?.stock || {};
+    const latestStock = latest(state.stockDaily) || {};
+    const loadedFromData = datasetSource === "data";
+    const records = loadedFromData ? state.stockDaily.length : firstNumber(stockStatus.records, state.stockDaily.length, 0);
+    const rawProvider = loadedFromData ? (latestStock.source || stockStatus.source || "data") : datasetSource;
+    const sourceCode = providerCode(rawProvider);
+    const sourceLabelText = providerLabel(sourceCode);
+    const typeLabel = datasetSource === "data" ? "真实数据" : datasetSource === "localStorage" ? "本地数据" : "演示数据";
+    const success = loadedFromData ? true : stockStatus.success === true;
+    const detail = loadedFromData
+      ? "页面已优先使用 data/stockDaily.json；localStorage 不会覆盖该股价数据。"
+      : datasetSource === "localStorage"
+        ? "data/stockDaily.json 当前没有有效记录，页面使用浏览器本地保存的数据。"
+        : "data/stockDaily.json 当前没有有效记录，页面使用 seed-data.js 演示股价。";
+    return {
+      ...stockStatus,
+      datasetSource,
+      success,
+      records,
+      sourceCode,
+      sourceLabel: sourceLabelText,
+      typeLabel,
+      detail,
+      updatedAt: stockStatus.updatedAt || latestStock.date || "",
+    };
+  }
+
+  function currentDatasetSources() {
+    return state.meta?.datasetSources || datasetSources;
+  }
+
+  function sourceLabel(key) {
+    const label = { data: "data/*.json", seed: "seed-data.js", localStorage: "localStorage" }[currentDatasetSources()[key]];
+    return label || "--";
+  }
+
+  function providerCode(value) {
+    const raw = String(value || "").trim();
+    const lower = raw.toLowerCase();
+    if (lower.includes("akshare")) return "akshare";
+    if (lower.includes("tushare")) return "tushare";
+    if (lower === "data") return "data";
+    if (lower === "seed") return "seed";
+    if (lower === "localstorage") return "localStorage";
+    return raw || "--";
+  }
+
+  function providerLabel(value) {
+    const code = providerCode(value);
+    return { akshare: "AkShare", tushare: "Tushare", data: "data/stockDaily.json", seed: "seed-data.js", localStorage: "localStorage" }[code] || code;
+  }
+
+  function firstNumber(...values) {
+    for (const value of values) {
+      const n = Number(value);
+      if (Number.isFinite(n)) return n;
+    }
+    return 0;
+  }
+
+  function drawDataSourceStatus() {
+    if (!els.dataSourcePanel) return;
+    const status = state.dataSourceStatus || {};
+    const stockRuntime = stockRuntimeStatus();
+    const wineStatus = status.winePrice || {};
+    const wineSummary = wineRuntimeSummary(wineStatus);
+    const reportStatus = status.financialReports || {};
+    const sampleCount = [...state.winePrices, ...state.stockDaily, ...state.financialReports, ...state.events].filter((r) => r.sample).length;
+    const sourceText = dataMode === "external" ? "真实数据" : dataMode === "local" ? "本地保存数据" : "演示数据";
+    const statusLabel = (item) => item.skipped ? "跳过" : item.success === false ? "失败" : item.success === true ? "成功" : "未知";
+    els.dataSourcePanel.innerHTML = [
+      note("当前数据模式", `${sourceText}<br>${loadMessage}`),
+      note("股价真实数据", stockDataHeadline()),
+      note("stock 运行状态", `stock.success=${String(stockRuntime.success)}<br>source=${stockRuntime.sourceCode}<br>records=${stockRuntime.records}`),
+      note("股价数据来源", sourceLabel("stockDaily")),
+      note("酒价数据来源", sourceLabel("winePrices")),
+      note("财报数据来源", sourceLabel("financialReports")),
+      note("事件数据来源", sourceLabel("events")),
+      note("股价更新时间", `${stockRuntime.updatedAt || "--"}｜${statusLabel(stockRuntime)}`),
+      note("酒价更新时间", `${wineStatus.updatedAt || "--"}｜${statusLabel(wineStatus)}`),
+      note("财报更新时间", `${reportStatus.updatedAt || "--"}｜${statusLabel(reportStatus)}`),
+      note("今日酒价", wineStatus.success === false ? `未更新：${wineStatus.message || "继续使用最近一次成功数据"}` : (wineStatus.message || "--")),
+      note("酒价历史展示区间", wineSummary.range),
+      note("winePrices 展示总数", `${wineSummary.displayRecords} 条`),
+      note("winePrices 估算趋势点", `${wineSummary.estimatedRecords} 条`),
+      note("winePrices 真实展示点", `${wineSummary.realDisplayRecords} 条`),
+      note("真实来源点底账", `${wineSummary.sourcePointLedgerRecords} 条`),
+      note("最新真实酒价", `${wineSummary.latestRealDate || "--"}｜散瓶 ${display(wineSummary.latestRealBottlePrice)}｜原箱 ${display(wineSummary.latestRealCasePrice)}`),
+      note("今日是否已更新", wineSummary.todayUpdated ? "是" : "否，今日酒价未更新，当前使用最近一次成功数据"),
+      note("预测酒价口径", wineSummary.predictionUsesRealSourcePointsOnly ? "只使用真实来源点" : "需检查"),
+      note("样例数据", `${sampleCount} 条`),
+      note("失败原因", [stockRuntime, wineStatus, reportStatus].filter((item) => item.success === false && !item.skipped).map((item) => item.message).join("<br>") || "--"),
+    ].join("");
+  }
+
+  function wineRuntimeSummary(wineStatus) {
+    const displayRecords = state.winePrices.length;
+    const estimatedRecords = state.winePrices.filter((row) => row.estimated === true).length;
+    const realDisplayRecords = state.winePrices.filter((row) => row.estimated === false && row.verified === true).length;
+    const sourcePointLedgerRecords = state.winePriceSourcePoints.length;
+    const latestReal = latest(realWineRows()) || {};
+    const historyRange = wineStatus.historyRange || {};
+    return {
+      displayRecords,
+      estimatedRecords,
+      realDisplayRecords,
+      sourcePointLedgerRecords,
+      latestRealDate: wineStatus.latestRealDate || latestReal.date || "",
+      latestRealBottlePrice: wineStatus.latestRealBottlePrice ?? latestReal.bottlePrice,
+      latestRealCasePrice: wineStatus.latestRealCasePrice ?? latestReal.casePrice,
+      todayUpdated: Boolean(wineStatus.todayUpdated),
+      predictionUsesRealSourcePointsOnly: wineStatus.predictionUsesRealSourcePointsOnly !== false,
+      range: `${historyRange.start || state.winePrices[0]?.date || "--"} 至 ${historyRange.end || state.winePrices.at(-1)?.date || "--"}`,
+    };
+  }
+
 
   function drawEvents() {
     els.eventList.innerHTML = sorted(state.events).slice(-8).reverse().map((event) => note(event.title, `${event.date}｜${event.type}｜${event.impact}<br>${event.description || ""}`)).join("");
   }
 
   function drawRelationship() {
-    const rows = mergeNearest(analytical(state.winePrices), state.stockDaily.filter((r) => r.sample !== true || isNum(r.close))).filter((r) => isNum(r.bottlePrice) && isNum(r.close)).slice(-8);
+    const rows = mergeNearest(realWineRows(), verifiedRows(state.stockDaily)).filter((r) => isNum(r.bottlePrice) && isNum(r.close)).slice(-8);
+    if (rows.length < 5) {
+      els.relationshipPanel.innerHTML = [
+        metric("有效样本", `${rows.length} 条`),
+        metric("相关系数", "真实有效样本不足"),
+        metric("当前关系", "真实有效样本不足"),
+        metric("计算口径", "estimated=false && verified=true && sample=false"),
+      ].join("");
+      return;
+    }
     const wineChange = changePct(rows.at(0)?.bottlePrice, rows.at(-1)?.bottlePrice);
     const stockChange = changePct(rows.at(0)?.close, rows.at(-1)?.close);
     const corr = correlation(rows.map((r) => r.bottlePrice), rows.map((r) => r.close));
@@ -452,15 +749,17 @@
   }
 
   function drawValuation() {
-    const stock = latest(state.stockDaily);
+    const realPeRows = verifiedRows(state.stockDaily).filter((r) => isNum(r.peTtm) || isNum(r.peStatic));
+    const sourceRows = realPeRows.length ? realPeRows : state.stockDaily;
+    const stock = latest(sourceRows);
     const pe = stock?.peTtm ?? stock?.peStatic;
-    const peValues = state.stockDaily.map((r) => r.peTtm ?? r.peStatic).filter(isNum);
+    const peValues = sourceRows.map((r) => r.peTtm ?? r.peStatic).filter(isNum);
     const implied = impliedGrowth(pe);
     els.valuationPanel.innerHTML = [
       metric("PE TTM", isNum(pe) ? `${fmt(pe, 1)}x` : "--"),
       metric("PE分位", isNum(pe) ? `${fmt(percentile(peValues, pe), 0)}%` : "--"),
       metric("隐含增速", implied.label),
-      metric("估值解释", implied.note),
+      metric("估值解释", realPeRows.length ? implied.note : "PE分位基于样例数据，仅供演示。"),
     ].join("");
   }
 
@@ -521,13 +820,20 @@
 
   function drawForecast() {
     const p = state.forecastParams;
+    if (!validForecastData()) {
+      els.forecastPanel.innerHTML = [
+        scenario("真实有效样本不足", "当前仅展示模型框架，不输出正式判断。", "核心预测要求 estimated=false、sample=false、verified=true，且酒价真实来源点不少于5条。"),
+        scenario("公式", "预测股价 = 未来EPS × 目标PE", "导入或更新真实数据后再进行情景推演。"),
+      ].join("");
+      return;
+    }
     const futureEps = p.currentEps * (1 + p.growthRate / 100);
     const targetPrice = futureEps * p.targetPe;
     const safePrice = targetPrice * (1 - p.marginOfSafety / 100);
     const peAdj = wineStateAdjustment(p.winePriceState);
     const pessimistic = futureEps * Math.max(12, p.targetPe - 4 + peAdj);
     const optimistic = futureEps * (p.targetPe + 4 + peAdj);
-    const current = latest(state.stockDaily)?.close;
+    const current = latest(verifiedRows(state.stockDaily))?.close;
     const implied = current && p.targetPe ? ((current / p.targetPe / p.currentEps) - 1) * 100 : null;
     const status = forecastStatus(p.winePriceState, p.growthRate);
     els.forecastPanel.innerHTML = [
@@ -541,9 +847,10 @@
 
   function drawTables() {
     const wineMap = new Map(state.winePrices.map((r) => [r.date, r]));
+    const stockRuntime = stockRuntimeStatus();
     els.recentRows.innerHTML = sorted(state.stockDaily).slice(-12).reverse().map((s) => {
       const w = wineMap.get(s.date) || {};
-      return `<tr><td>${s.date}</td><td>${display(w.bottlePrice)}</td><td>${display(w.casePrice)}</td><td>${display(s.close, 2)}</td><td>${display(s.peTtm ?? s.peStatic, 1)}</td><td>${w.source || "--"}</td></tr>`;
+      return `<tr><td>${s.date}</td><td>${display(w.bottlePrice)}</td><td>${display(w.casePrice)}</td><td>${display(s.close, 2)}</td><td>${display(s.peTtm ?? s.peStatic, 1)}</td><td>${w.source || s.source || stockRuntime.sourceLabel || "--"}</td></tr>`;
     }).join("");
     els.reportRows.innerHTML = sorted(state.financialReports, "period").slice(-8).reverse().map((r) => `<tr><td>${r.period}</td><td>${fmt(toYi(r.revenue), 1)}</td><td>${fmt(toYi(r.netProfit), 1)}</td><td>${display(r.eps, 2)}</td><td>${pctRaw(r.grossMargin)}</td><td>${pctRaw(r.netMargin)}</td></tr>`).join("");
   }
@@ -651,10 +958,10 @@
   }
 
   function normalizeCsvRow(type, row) {
-    if (type === "winePrices") return { date: row.date || row.日期, bottlePrice: num(row.bottlePrice || row.散瓶), casePrice: num(row.casePrice || row.原箱), source: row.source || row.来源 || "CSV导入", verified: bool(row.verified || row.已核验), sample: bool(row.sample || row.样例), note: row.note || row.备注 || "" };
-    if (type === "stockDaily") return { date: row.date || row.日期, close: num(row.close || row.收盘 || row.stockPrice), open: num(row.open || row.开盘), high: num(row.high || row.最高), low: num(row.low || row.最低), volume: num(row.volume || row.成交量), amount: num(row.amount || row.成交额), pctChange: num(row.pctChange || row.涨跌幅), peTtm: num(row.peTtm), peStatic: num(row.peStatic), pb: num(row.pb), dividendYield: num(row.dividendYield || row.股息率), marketCap: num(row.marketCap || row.市值), sample: bool(row.sample || row.样例) };
-    if (type === "financialReports") return { ...row, period: row.period || row.报告期, reportType: row.reportType || row.类型, revenue: num(row.revenue || row.营收), revenueYoY: num(row.revenueYoY || row.营收同比), netProfit: num(row.netProfit || row.归母净利润), netProfitYoY: num(row.netProfitYoY || row.净利同比), deductNetProfit: num(row.deductNetProfit), eps: num(row.eps), grossMargin: num(row.grossMargin), netMargin: num(row.netMargin), roe: num(row.roe), operatingCashFlow: num(row.operatingCashFlow), dividendPerShare: num(row.dividendPerShare), moutaiWineRevenue: num(row.moutaiWineRevenue), seriesWineRevenue: num(row.seriesWineRevenue), directSalesRevenue: num(row.directSalesRevenue), wholesaleRevenue: num(row.wholesaleRevenue), iMoutaiRevenue: num(row.iMoutaiRevenue), dealerCount: num(row.dealerCount), sample: bool(row.sample || row.样例) };
-    return { date: row.date || row.日期, type: row.type || row.类型 || "custom", title: row.title || row.标题, description: row.description || row.描述, impact: row.impact || row.影响, source: row.source || row.来源 };
+    if (type === "winePrices") return { date: row.date || row.日期, product: row.product, year: row.year, spec: row.spec, bottlePrice: num(row.bottlePrice || row.散瓶), casePrice: num(row.casePrice || row.原箱), priceType: row.priceType, source: row.source || row.来源 || "CSV导入", sourceUrl: row.sourceUrl || "", verified: bool(row.verified || row.已核验), sample: bool(row.sample || row.样例), estimated: bool(row.estimated || row.估算), sourcePoint: bool(row.sourcePoint || row.真实来源点), note: row.note || row.备注 || "" };
+    if (type === "stockDaily") return { date: row.date || row.日期, close: num(row.close || row.收盘 || row.stockPrice), open: num(row.open || row.开盘), high: num(row.high || row.最高), low: num(row.low || row.最低), volume: num(row.volume || row.成交量), amount: num(row.amount || row.成交额), pctChange: num(row.pctChange || row.涨跌幅), pe: num(row.pe), peTtm: num(row.peTtm), peStatic: num(row.peStatic), pb: num(row.pb), dividendYield: num(row.dividendYield || row.股息率), dividendYieldTtm: num(row.dividendYieldTtm), totalMarketCap: num(row.totalMarketCap || row.marketCap || row.市值), marketCap: num(row.marketCap || row.totalMarketCap || row.市值), source: row.source || "CSV导入", verified: bool(row.verified || row.已核验), sample: bool(row.sample || row.样例), note: row.note || "" };
+    if (type === "financialReports") return { ...row, period: row.period || row.报告期, reportType: row.reportType || row.类型, revenue: num(row.revenue || row.营收), revenueYoY: num(row.revenueYoY || row.营收同比), netProfit: num(row.netProfit || row.归母净利润), netProfitYoY: num(row.netProfitYoY || row.净利同比), deductNetProfit: num(row.deductNetProfit), eps: num(row.eps), grossMargin: num(row.grossMargin), netMargin: num(row.netMargin), roe: num(row.roe), operatingCashFlow: num(row.operatingCashFlow), dividendPerShare: num(row.dividendPerShare), moutaiWineRevenue: num(row.moutaiWineRevenue), seriesWineRevenue: num(row.seriesWineRevenue), directSalesRevenue: num(row.directSalesRevenue), wholesaleRevenue: num(row.wholesaleRevenue), iMoutaiRevenue: num(row.iMoutaiRevenue), dealerCount: num(row.dealerCount), source: row.source || row.来源 || "CSV导入", sourceUrl: row.sourceUrl || "", verified: bool(row.verified || row.已核验), sample: bool(row.sample || row.样例), note: row.note || row.备注 || "" };
+    return { date: row.date || row.日期, type: row.type || row.类型 || "custom", title: row.title || row.标题, description: row.description || row.描述, impact: row.impact || row.影响, source: row.source || row.来源, sourceUrl: row.sourceUrl || "", verified: bool(row.verified || row.已核验), sample: bool(row.sample || row.样例), note: row.note || "" };
   }
 
   function parseCsv(text) {
@@ -665,10 +972,10 @@
 
   function downloadTemplate(type) {
     const templates = {
-      winePrices: "date,bottlePrice,casePrice,source,verified,sample,note\n2026-05-13,1645,1680,今日酒价,true,false,示例",
-      stockDaily: "date,open,high,low,close,volume,amount,pctChange,peTtm,peStatic,pb,dividendYield,marketCap,sample\n2026-05-13,,,,1348,,,-1,20.5,20.5,,3.7,,false",
-      financialReports: "period,reportType,revenue,revenueYoY,netProfit,netProfitYoY,deductNetProfit,eps,grossMargin,netMargin,roe,operatingCashFlow,dividendPerShare,moutaiWineRevenue,seriesWineRevenue,directSalesRevenue,wholesaleRevenue,iMoutaiRevenue,dealerCount,source,note,sample\n2026Q1,q1,53909000000,6.54,27243000000,1.47,,21.7,,,,834000000,,,29504000000,24382000000,21553000000,,一季报,示例,false",
-      events: "date,type,title,description,impact,source\n2026-03-31,price,飞天调价,合同价和自营价上调,positive,公司公告报道",
+      winePrices: "date,product,year,spec,bottlePrice,casePrice,priceType,source,sourceUrl,verified,sample,note\n2026-05-13,53度飞天茅台,当年,500ml,1645,1680,批价,今日酒价,,true,false,示例",
+      stockDaily: "date,open,high,low,close,pctChange,volume,amount,pe,peTtm,pb,dividendYield,dividendYieldTtm,totalMarketCap,source,verified,sample,note\n2026-05-13,,,,1348,-1,,,,20.5,,3.7,,,tushare,true,false,示例",
+      financialReports: "period,reportType,revenue,revenueYoY,netProfit,netProfitYoY,deductNetProfit,eps,grossMargin,netMargin,roe,operatingCashFlow,dividendPerShare,moutaiWineRevenue,seriesWineRevenue,directSalesRevenue,wholesaleRevenue,iMoutaiRevenue,dealerCount,source,sourceUrl,verified,sample,note\n2026Q1,q1,53909000000,6.54,27243000000,1.47,,21.7,,,,834000000,,,29504000000,24382000000,21553000000,,一季报,,true,false,示例",
+      events: "date,type,title,description,impact,source,sourceUrl,verified,sample,note\n2026-03-31,price,飞天调价,合同价和自营价上调,positive,公司公告报道,,true,false,",
     };
     const names = { winePrices: "wine-price-template.csv", stockDaily: "stock-daily-template.csv", financialReports: "financial-report-template.csv", events: "events-template.csv" };
     download(names[type], templates[type], "text/csv;charset=utf-8");
@@ -742,7 +1049,10 @@
   }
 
   function dots(rows, field, x, y, color, key = "date") {
-    return rows.filter((r) => isNum(r[field]) && !r.sample).map((r) => `<circle cx="${x(key === "period" ? rows.indexOf(r) : xValue(r, key))}" cy="${y(r[field])}" r="3" fill="${color}" stroke="#fff"/>`).join("");
+    return rows
+      .filter((r) => isNum(r[field]) && !r.sample && (r.sourcePoint === true || (r.estimated === false && r.verified === true)))
+      .map((r) => `<circle cx="${x(key === "period" ? rows.indexOf(r) : xValue(r, key))}" cy="${y(r[field])}" r="${r.sourcePoint === true ? 3.5 : 2.5}" fill="${color}" stroke="#fff"/>`)
+      .join("");
   }
 
   function refLines(values, y, plot) {

@@ -1,0 +1,28 @@
+[
+  {
+    "updatedAt": "2026-05-15 18:30:00",
+    "title": "接入茅台散飞历史酒价数据",
+    "summary": "已导入 2001-08-27 至 2026-05-15 的茅台散飞日频展示数据，并新增真实来源点底账。",
+    "changes": [
+      "winePrices 展示数据 9028 条",
+      "winePriceSourcePoints 真实来源点 83 条",
+      "official price events 官方价格节点 11 条",
+      "核心分析已改为只使用真实来源点"
+    ],
+    "dataStats": {
+      "winePrices": 9028,
+      "wineEstimatedPoints": 8960,
+      "wineRealDisplayPoints": 68,
+      "wineSourcePoints": 83,
+      "events": 11
+    },
+    "latestData": {
+      "latestWineDate": "2026-05-15",
+      "latestWinePrice": null,
+      "latestStockDate": null,
+      "latestFinancialPeriod": null
+    },
+    "source": "PR #7",
+    "status": "success"
+  }
+]
