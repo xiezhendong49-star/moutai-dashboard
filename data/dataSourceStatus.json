@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-19 09:48:59",
+  "updatedAt": "2026-05-19 10:16:58",
   "stock": {
     "success": false,
     "source": "tushare/akshare",
@@ -45,26 +45,32 @@
   "financialReports": {
     "success": true,
     "source": "公开财报摘要",
-    "updatedAt": "2026-05-19 09:48:59",
-    "message": "财报结构化数据更新成功；来源=公开财报摘要；部分列表/自动源失败：本地缺少 requests/akshare 时使用公开财报摘要保底，旧数据不会清空",
+    "updatedAt": "2026-05-19 10:16:58",
+    "message": "财报结构化字段已补齐；当前主要为 provisional 公开摘要保底数据，正式研究需以官方报告核验。",
     "records": 9,
     "structured": true,
+    "provisional": true,
+    "note": "当前财报结构化字段已补齐，但主要是 provisional 数据，正式研究需以官方报告核验。",
     "metricsCoverage": {
       "epsAvailable": 9,
+      "epsVerified": 0,
       "revenueAvailable": 9,
+      "revenueVerified": 0,
       "netProfitAvailable": 9,
+      "netProfitVerified": 0,
+      "provisionalRecords": 9,
       "structuredRecords": 9
     }
   },
   "summary": {
     "stock": {"success": false, "skipped": false, "failed": true, "script": "update_stock_data.py", "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"},
     "winePrice": {"success": true, "skipped": false, "failed": false, "script": "update_wine_price.py", "message": "ok"},
-    "financialReports": {"success": true, "skipped": false, "failed": false, "script": "update_financial_reports.py", "message": "财报结构化数据更新成功；来源=公开财报摘要"},
+    "financialReports": {"success": true, "skipped": false, "failed": false, "script": "update_financial_reports.py", "message": "财报结构化字段已补齐；当前主要为 provisional 公开摘要保底数据"},
     "dataQuality": {"success": true, "skipped": false, "failed": false, "script": "audit_data_quality.py", "message": "ok"}
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-05-19 09:48:59",
+    "updatedAt": "2026-05-19 10:16:58",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
