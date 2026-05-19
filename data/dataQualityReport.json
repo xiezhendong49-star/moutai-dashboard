@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-19 09:48:59",
+  "updatedAt": "2026-05-19 10:16:58",
   "stock": {
     "records": 3965,
     "dateRange": {"start": "2010-01-04", "end": "2026-05-15"},
@@ -26,8 +26,14 @@
   "financialReports": {
     "records": 9,
     "epsAvailable": 9,
+    "epsVerified": 0,
     "revenueAvailable": 9,
-    "netProfitAvailable": 9
+    "revenueVerified": 0,
+    "netProfitAvailable": 9,
+    "netProfitVerified": 0,
+    "provisionalRecords": 9,
+    "officialVerifiedRecords": 0,
+    "note": "当前财报结构化字段已补齐，但主要是 provisional 数据，正式研究需以官方报告核验。"
   },
   "events": {"records": 26},
   "warnings": ["估值字段不足，暂不输出正式 PE 分位"]
