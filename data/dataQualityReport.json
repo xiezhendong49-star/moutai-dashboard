@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-18 10:00:00",
+  "updatedAt": "2026-05-19 00:18:48",
   "stock": {
     "records": 3965,
     "dateRange": {
@@ -48,10 +48,10 @@
     "peTtmEnoughForFormalPercentile": false
   },
   "winePrice": {
-    "displayRecords": 9028,
-    "sourcePointRecords": 83,
+    "displayRecords": 9029,
+    "sourcePointRecords": 84,
     "estimatedTrendRecords": 8960,
-    "realDisplayRecords": 68,
+    "realDisplayRecords": 69,
     "matchedStockDateRecords": 37,
     "matchedStockDates": [
       "2010-12-31",
@@ -101,7 +101,7 @@
     "netProfitAvailable": 0
   },
   "events": {
-    "records": 11
+    "records": 26
   },
   "warnings": [
     "估值字段不足，暂不输出正式 PE 分位"

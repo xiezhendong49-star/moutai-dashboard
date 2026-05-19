@@ -24,5 +24,31 @@
     },
     "source": "PR #7",
     "status": "success"
+  },
+  {
+    "updatedAt": "2026-05-19 00:18:48",
+    "title": "数据自动更新部分失败",
+    "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
+    "changes": [
+      "stock: 股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+      "winePrice: ok",
+      "financialReports: ok",
+      "dataQuality: ok"
+    ],
+    "dataStats": {
+      "winePrices": 9029,
+      "wineEstimatedPoints": 8960,
+      "wineRealDisplayPoints": 69,
+      "wineSourcePoints": 84,
+      "events": 26
+    },
+    "latestData": {
+      "latestWineDate": "2026-05-18",
+      "latestWinePrice": 1650,
+      "latestStockDate": "2026-05-15",
+      "latestFinancialPeriod": "2026Q1"
+    },
+    "source": "scripts/update_all.py",
+    "status": "failed"
   }
 ]
