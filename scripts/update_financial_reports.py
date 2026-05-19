@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Update Kweichow Moutai financial report metadata and key metrics.
-
-The script first tries public automatic sources, then falls back to a
-small public-report metric ledger so old report rows are not left empty.
-Failures never clear existing data.
-"""
+"""Update Kweichow Moutai financial report metadata and key metrics."""
 
 from __future__ import annotations
 
@@ -18,7 +13,6 @@ from importlib import import_module
 from pathlib import Path
 from urllib.parse import urljoin
 
-
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
 REPORT_FILE = DATA_DIR / "financialReports.json"
@@ -28,7 +22,6 @@ DEFAULT_REPORT_URLS = [
     "https://www.moutaichina.com/mtgf/tzzgx/cwbg/index.html",
     "https://www.moutaichina.com/mtgf/tzzgx/gsgg/index.html",
 ]
-
 PUBLIC_METRICS = [
     {"period": "2024Q1", "reportType": "q1", "revenue": 46484738100, "revenueYoY": 18.04, "netProfit": 24065262400, "netProfitYoY": 15.73, "eps": 19.16, "roe": 10.5, "grossMargin": 92.6, "netMargin": 51.77, "operatingCashFlow": 9186000000},
     {"period": "2024H1", "reportType": "half", "revenue": 83451164600, "revenueYoY": 17.76, "netProfit": 41695611000, "netProfitYoY": 15.88, "eps": 33.18, "roe": 18.1, "grossMargin": 91.8, "netMargin": 49.96, "operatingCashFlow": 21000000000},
@@ -67,18 +60,20 @@ def is_number(value) -> bool:
 def metrics_coverage(rows: list[dict]) -> dict:
     return {
         "epsAvailable": sum(1 for row in rows if is_number(row.get("eps"))),
+        "epsVerified": sum(1 for row in rows if is_number(row.get("eps")) and row.get("verified") is True),
         "revenueAvailable": sum(1 for row in rows if is_number(row.get("revenue"))),
+        "revenueVerified": sum(1 for row in rows if is_number(row.get("revenue")) and row.get("verified") is True),
         "netProfitAvailable": sum(1 for row in rows if is_number(row.get("netProfit"))),
-        "structuredRecords": sum(
-            1 for row in rows
-            if is_number(row.get("eps")) and is_number(row.get("revenue")) and is_number(row.get("netProfit"))
-        ),
+        "netProfitVerified": sum(1 for row in rows if is_number(row.get("netProfit")) and row.get("verified") is True),
+        "provisionalRecords": sum(1 for row in rows if row.get("provisional") is True),
+        "structuredRecords": sum(1 for row in rows if is_number(row.get("eps")) and is_number(row.get("revenue")) and is_number(row.get("netProfit"))),
     }
 
 
 def update_status(success: bool, message: str, records: int = 0, source: str = "贵州茅台官网 + 公开财报摘要", rows: list[dict] | None = None) -> None:
     status = read_json(STATUS_FILE, {})
     rows = rows if isinstance(rows, list) else []
+    coverage = metrics_coverage(rows)
     status["updatedAt"] = now_text()
     status["financialReports"] = {
         "success": success,
@@ -86,8 +81,10 @@ def update_status(success: bool, message: str, records: int = 0, source: str = "
         "updatedAt": now_text(),
         "message": message,
         "records": records,
-        "structured": success and metrics_coverage(rows)["structuredRecords"] > 0,
-        "metricsCoverage": metrics_coverage(rows),
+        "structured": success and coverage["structuredRecords"] > 0,
+        "provisional": coverage["provisionalRecords"] > 0,
+        "note": "当前财报结构化字段已补齐，但主要是 provisional 数据，正式研究需以官方报告核验。",
+        "metricsCoverage": coverage,
     }
     summary = status.get("summary")
     if isinstance(summary, dict):
@@ -155,8 +152,7 @@ def parse_date(text: str):
     match = re.search(r"(20\d{2}[-/.年]\d{1,2}[-/.月]\d{1,2})", text)
     if not match:
         return datetime.now().strftime("%Y-%m-%d")
-    raw = match.group(1).replace("年", "-").replace("月", "-").replace("/", "-").replace(".", "-")
-    raw = raw.replace("日", "")
+    raw = match.group(1).replace("年", "-").replace("月", "-").replace("/", "-").replace(".", "-").replace("日", "")
     return datetime.strptime(raw, "%Y-%m-%d").strftime("%Y-%m-%d")
 
 
@@ -178,13 +174,7 @@ def fetch_reports(url: str) -> list[dict]:
             continue
         full_url = urljoin(url, href)
         parent_text = link.parent.get_text(" ", strip=True) if link.parent else title
-        reports.append({
-            "title": title,
-            "date": parse_date(parent_text),
-            "url": full_url,
-            "reportType": report_type,
-            "period": detect_period(title, report_type),
-        })
+        reports.append({"title": title, "date": parse_date(parent_text), "url": full_url, "reportType": report_type, "period": detect_period(title, report_type)})
     return reports
 
 
@@ -202,6 +192,8 @@ def upsert_financial_reports(existing: list[dict], reports: list[dict]) -> list[
             "updatedAt": now_text(),
             "sample": False,
             "verified": True,
+            "provisional": False,
+            "sourceType": "official_report",
             "note": report["title"],
         }
         if report["period"] in by_period:
@@ -214,20 +206,19 @@ def upsert_financial_reports(existing: list[dict], reports: list[dict]) -> list[
 
 def public_metric_rows() -> list[dict]:
     updated_at = now_text()
-    rows = []
-    for row in PUBLIC_METRICS:
-        rows.append({
-            **row,
-            "source": "公开财报摘要",
-            "sourceUrl": "https://stock.quote.stockstar.com/finance_600519.shtml",
-            "currency": "CNY",
-            "unit": "yuan",
-            "updatedAt": updated_at,
-            "sample": False,
-            "verified": True,
-            "note": "公开财报摘要结构化数据；自动源失败时作为保底，不覆盖官网报告链接",
-        })
-    return rows
+    return [{
+        **row,
+        "source": "公开财报摘要",
+        "sourceUrl": "https://stock.quote.stockstar.com/finance_600519.shtml",
+        "sourceType": "public_summary",
+        "currency": "CNY",
+        "unit": "yuan",
+        "updatedAt": updated_at,
+        "sample": False,
+        "verified": False,
+        "provisional": True,
+        "note": "公开摘要保底数据，未逐项核验官方 PDF",
+    } for row in PUBLIC_METRICS]
 
 
 def fetch_metrics_from_akshare(symbol: str) -> list[dict]:
@@ -283,13 +274,23 @@ def merge_metrics(rows: list[dict], metric_rows: list[dict]) -> list[dict]:
         if not period:
             continue
         current = by_period.get(period, {})
+        report_source = current.get("source")
+        report_source_url = current.get("sourceUrl")
+        report_note = current.get("note")
         merged = {**current, **metric}
-        if current.get("sourceUrl"):
-            merged["source"] = current.get("source")
-            merged["sourceUrl"] = current.get("sourceUrl")
-            merged["note"] = current.get("note")
-            merged["metricSource"] = metric.get("source")
-            merged["metricSourceUrl"] = metric.get("sourceUrl")
+        if metric.get("sourceType") == "public_summary":
+            merged.pop("metricSource", None)
+            merged.pop("metricSourceUrl", None)
+            merged.pop("reportSource", None)
+            merged.pop("reportSourceUrl", None)
+            merged.pop("reportNote", None)
+            merged["verified"] = False
+            merged["provisional"] = True
+            merged["sourceType"] = "public_summary"
+        if report_source_url and metric.get("sourceType") == "public_summary" and current.get("sourceType") == "official_report":
+            merged["reportSource"] = report_source
+            merged["reportSourceUrl"] = report_source_url
+            merged["reportNote"] = report_note
         by_period[period] = merged
     return sorted(by_period.values(), key=lambda x: x.get("period", ""))
 
@@ -338,7 +339,7 @@ def main() -> int:
         return 1
 
     write_json(REPORT_FILE, rows)
-    message = f"财报结构化数据更新成功；来源={metric_source}"
+    message = f"财报结构化字段已补齐；来源={metric_source}；当前主要为 provisional 数据，正式研究需以官方报告核验"
     if errors:
         message += f"；部分列表/自动源失败：{'；'.join(errors)}"
     update_status(True, message, len(rows), source=metric_source, rows=rows)
@@ -346,8 +347,9 @@ def main() -> int:
     coverage = metrics_coverage(rows)
     print(
         "[financial] success: "
-        f"{len(rows)} records, eps={coverage['epsAvailable']}, "
-        f"revenue={coverage['revenueAvailable']}, netProfit={coverage['netProfitAvailable']}"
+        f"{len(rows)} records, eps={coverage['epsAvailable']}/{coverage['epsVerified']} verified, "
+        f"revenue={coverage['revenueAvailable']}/{coverage['revenueVerified']} verified, "
+        f"netProfit={coverage['netProfitAvailable']}/{coverage['netProfitVerified']} verified"
     )
     return 0
 
