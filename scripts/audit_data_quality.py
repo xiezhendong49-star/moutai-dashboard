@@ -40,6 +40,10 @@ def count_available(rows: list[dict], field: str) -> int:
     return sum(1 for row in rows if is_number(row.get(field)))
 
 
+def count_verified(rows: list[dict], field: str) -> int:
+    return sum(1 for row in rows if is_number(row.get(field)) and row.get("verified") is True)
+
+
 def completeness(rows: list[dict], field: str) -> dict:
     total = len(rows)
     available = count_available(rows, field)
@@ -108,8 +112,14 @@ def main() -> int:
         "financialReports": {
             "records": len(reports),
             "epsAvailable": count_available(reports, "eps"),
+            "epsVerified": count_verified(reports, "eps"),
             "revenueAvailable": count_available(reports, "revenue"),
+            "revenueVerified": count_verified(reports, "revenue"),
             "netProfitAvailable": count_available(reports, "netProfit"),
+            "netProfitVerified": count_verified(reports, "netProfit"),
+            "provisionalRecords": sum(1 for row in reports if row.get("provisional") is True),
+            "officialVerifiedRecords": sum(1 for row in reports if row.get("sourceType") == "official_report" and row.get("verified") is True),
+            "note": "当前财报结构化字段已补齐，但主要是 provisional 数据，正式研究需以官方报告核验。",
         },
         "events": {
             "records": len(events),

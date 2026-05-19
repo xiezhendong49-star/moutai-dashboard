@@ -116,6 +116,14 @@ python3 scripts/update_stock_data.py
 
 如果需要完整的 PE/PB/市值分析，请在本地 `.env` 或 GitHub Actions Secret 中配置 `TUSHARE_TOKEN`。`scripts/update_stock_data.py` 每次运行后会自动执行 `scripts/audit_data_quality.py`，并把估值字段完整率写入 `data/dataQualityReport.json` 和 `data/dataSourceStatus.json`。
 
+## 财报结构化数据
+
+`data/financialReports.json` 保存贵州茅台财报列表和结构化核心指标，包括营收、归母净利润、EPS、ROE、毛利率、净利率和经营现金流等字段。`scripts/update_financial_reports.py` 会优先读取贵州茅台官网财报页和 AkShare 公开财务指标；如果自动源暂时失败，会保留已有财报列表，并使用公开财报摘要作为结构化指标保底，不会清空旧数据。
+
+财报字段主要用于页面财务趋势和数据质量审计。不同公开源对“营业收入/营业总收入”、利润口径和发布时间可能存在差异，正式研究引用时应以贵州茅台公告 PDF 为准。
+
+公开财报摘要只作为看板趋势和字段补齐，不作为最终核验口径；这类记录会标记为 `provisional=true`、`verified=false`。
+
 ## 一键更新数据
 
 ```bash
