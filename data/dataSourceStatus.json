@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-05-19 10:16:58",
+  "updatedAt": "2026-05-19 23:50:11",
   "stock": {
     "success": false,
     "source": "tushare/akshare",
-    "updatedAt": "2026-05-19 00:18:43",
+    "updatedAt": "2026-05-19 23:50:00",
     "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
     "records": 3965,
     "valuationFields": {
@@ -11,42 +11,69 @@
       "filled": false,
       "message": "AkShare 当前未补齐估值字段",
       "fields": {
-        "pe": {"available": 0, "total": 3965, "rate": 0.0},
-        "peTtm": {"available": 0, "total": 3965, "rate": 0.0},
-        "pb": {"available": 0, "total": 3965, "rate": 0.0},
-        "dividendYield": {"available": 0, "total": 3965, "rate": 0.0},
-        "dividendYieldTtm": {"available": 0, "total": 3965, "rate": 0.0},
-        "totalMarketCap": {"available": 0, "total": 3965, "rate": 0.0}
+        "pe": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        },
+        "peTtm": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        },
+        "pb": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        },
+        "dividendYield": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        },
+        "dividendYieldTtm": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        },
+        "totalMarketCap": {
+          "available": 0,
+          "total": 3965,
+          "rate": 0.0
+        }
       }
     },
     "skipped": false,
     "script": "update_stock_data.py"
   },
   "winePrice": {
-    "historyRange": {"start": "2001-08-27", "end": "2026-05-18"},
-    "displayRecords": 9029,
+    "historyRange": {
+      "start": "2001-08-27",
+      "end": "2026-05-19"
+    },
+    "displayRecords": 9030,
     "estimatedRecords": 8960,
-    "realDisplayRecords": 69,
-    "sourcePointLedgerRecords": 84,
-    "sourcePointRecords": 84,
-    "realRecords": 84,
-    "latestRealDate": "2026-05-18",
+    "realDisplayRecords": 70,
+    "sourcePointLedgerRecords": 85,
+    "sourcePointRecords": 85,
+    "realRecords": 85,
+    "latestRealDate": "2026-05-19",
     "latestRealBottlePrice": 1650,
-    "latestRealCasePrice": 1680,
-    "todayUpdated": false,
+    "latestRealCasePrice": 1690,
+    "todayUpdated": true,
     "predictionUsesRealSourcePointsOnly": true,
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-05-19 00:18:46",
+    "updatedAt": "2026-05-19 23:50:02",
     "message": "酒价更新成功 1 个来源",
-    "records": 9029
+    "records": 9030
   },
   "financialReports": {
     "success": true,
-    "source": "公开财报摘要",
-    "updatedAt": "2026-05-19 10:16:58",
-    "message": "财报结构化字段已补齐；当前主要为 provisional 公开摘要保底数据，正式研究需以官方报告核验。",
+    "source": "AkShare + 公开财报摘要",
+    "updatedAt": "2026-05-19 23:50:11",
+    "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 9,
     "structured": true,
     "provisional": true,
@@ -63,14 +90,38 @@
     }
   },
   "summary": {
-    "stock": {"success": false, "skipped": false, "failed": true, "script": "update_stock_data.py", "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"},
-    "winePrice": {"success": true, "skipped": false, "failed": false, "script": "update_wine_price.py", "message": "ok"},
-    "financialReports": {"success": true, "skipped": false, "failed": false, "script": "update_financial_reports.py", "message": "财报结构化字段已补齐；当前主要为 provisional 公开摘要保底数据"},
-    "dataQuality": {"success": true, "skipped": false, "failed": false, "script": "audit_data_quality.py", "message": "ok"}
+    "stock": {
+      "success": false,
+      "skipped": false,
+      "failed": true,
+      "script": "update_stock_data.py",
+      "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+    },
+    "winePrice": {
+      "success": true,
+      "skipped": false,
+      "failed": false,
+      "script": "update_wine_price.py",
+      "message": "ok"
+    },
+    "financialReports": {
+      "success": true,
+      "skipped": false,
+      "failed": false,
+      "script": "update_financial_reports.py",
+      "message": "ok"
+    },
+    "dataQuality": {
+      "success": true,
+      "skipped": false,
+      "failed": false,
+      "script": "audit_data_quality.py",
+      "message": "ok"
+    }
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-05-19 10:16:58",
+    "updatedAt": "2026-05-19 23:50:11",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
@@ -78,6 +129,8 @@
     "dividendYieldCompleteness": 0.0,
     "totalMarketCapCompleteness": 0.0,
     "wineStockMatchedDates": 37,
-    "warnings": ["估值字段不足，暂不输出正式 PE 分位"]
+    "warnings": [
+      "估值字段不足，暂不输出正式 PE 分位"
+    ]
   }
 }
