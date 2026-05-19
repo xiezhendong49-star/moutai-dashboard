@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-19 00:18:48",
+  "updatedAt": "2026-05-19 09:48:59",
   "stock": {
     "success": false,
     "source": "tushare/akshare",
@@ -11,46 +11,19 @@
       "filled": false,
       "message": "AkShare 当前未补齐估值字段",
       "fields": {
-        "pe": {
-          "available": 0,
-          "total": 3965,
-          "rate": 0.0
-        },
-        "peTtm": {
-          "available": 0,
-          "total": 3965,
-          "rate": 0.0
-        },
-        "pb": {
-          "available": 0,
-          "total": 3965,
-          "rate": 0.0
-        },
-        "dividendYield": {
-          "available": 0,
-          "total": 3965,
-          "rate": 0.0
-        },
-        "dividendYieldTtm": {
-          "available": 0,
-          "total": 3965,
-          "rate": 0.0
-        },
-        "totalMarketCap": {
-          "available": 0,
-          "total": 3965,
-          "rate": 0.0
-        }
+        "pe": {"available": 0, "total": 3965, "rate": 0.0},
+        "peTtm": {"available": 0, "total": 3965, "rate": 0.0},
+        "pb": {"available": 0, "total": 3965, "rate": 0.0},
+        "dividendYield": {"available": 0, "total": 3965, "rate": 0.0},
+        "dividendYieldTtm": {"available": 0, "total": 3965, "rate": 0.0},
+        "totalMarketCap": {"available": 0, "total": 3965, "rate": 0.0}
       }
     },
     "skipped": false,
     "script": "update_stock_data.py"
   },
   "winePrice": {
-    "historyRange": {
-      "start": "2001-08-27",
-      "end": "2026-05-18"
-    },
+    "historyRange": {"start": "2001-08-27", "end": "2026-05-18"},
     "displayRecords": 9029,
     "estimatedRecords": 8960,
     "realDisplayRecords": 69,
@@ -71,44 +44,27 @@
   },
   "financialReports": {
     "success": true,
-    "source": "贵州茅台官网",
-    "updatedAt": "2026-05-19 00:18:48",
-    "message": "财报列表更新成功",
-    "records": 7
+    "source": "公开财报摘要",
+    "updatedAt": "2026-05-19 09:48:59",
+    "message": "财报结构化数据更新成功；来源=公开财报摘要；部分列表/自动源失败：本地缺少 requests/akshare 时使用公开财报摘要保底，旧数据不会清空",
+    "records": 9,
+    "structured": true,
+    "metricsCoverage": {
+      "epsAvailable": 9,
+      "revenueAvailable": 9,
+      "netProfitAvailable": 9,
+      "structuredRecords": 9
+    }
   },
   "summary": {
-    "stock": {
-      "success": false,
-      "skipped": false,
-      "failed": true,
-      "script": "update_stock_data.py",
-      "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
-    },
-    "winePrice": {
-      "success": true,
-      "skipped": false,
-      "failed": false,
-      "script": "update_wine_price.py",
-      "message": "ok"
-    },
-    "financialReports": {
-      "success": true,
-      "skipped": false,
-      "failed": false,
-      "script": "update_financial_reports.py",
-      "message": "ok"
-    },
-    "dataQuality": {
-      "success": true,
-      "skipped": false,
-      "failed": false,
-      "script": "audit_data_quality.py",
-      "message": "ok"
-    }
+    "stock": {"success": false, "skipped": false, "failed": true, "script": "update_stock_data.py", "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"},
+    "winePrice": {"success": true, "skipped": false, "failed": false, "script": "update_wine_price.py", "message": "ok"},
+    "financialReports": {"success": true, "skipped": false, "failed": false, "script": "update_financial_reports.py", "message": "财报结构化数据更新成功；来源=公开财报摘要"},
+    "dataQuality": {"success": true, "skipped": false, "failed": false, "script": "audit_data_quality.py", "message": "ok"}
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-05-19 00:18:48",
+    "updatedAt": "2026-05-19 09:48:59",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
@@ -116,8 +72,6 @@
     "dividendYieldCompleteness": 0.0,
     "totalMarketCapCompleteness": 0.0,
     "wineStockMatchedDates": 37,
-    "warnings": [
-      "估值字段不足，暂不输出正式 PE 分位"
-    ]
+    "warnings": ["估值字段不足，暂不输出正式 PE 分位"]
   }
 }
