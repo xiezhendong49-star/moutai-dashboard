@@ -68,8 +68,11 @@ def valuation_status(rows: list[dict], source: str) -> dict:
         "totalMarketCap": field_coverage(rows, "totalMarketCap"),
     }
     filled = any(item["available"] > 0 for item in fields.values())
+    source_label = "tushare daily_basic" if source == "tushare" else "akshare price only"
+    if source == "akshare_after_tushare_failed":
+        source_label = "akshare fallback after tushare failed"
     return {
-        "source": "tushare daily_basic" if source == "tushare" else "akshare price only",
+        "source": source_label,
         "filled": filled,
         "message": "估值字段已尝试通过 Tushare daily_basic 补齐" if source == "tushare" else "AkShare 当前未补齐估值字段",
         "fields": fields,
@@ -269,6 +272,17 @@ def load_from_akshare(symbol: str, start_date: str) -> list[dict]:
     return sorted(rows, key=lambda x: x["date"])
 
 
+def load_stock_rows(token: str, stock_code: str, start_date: str, symbol: str) -> tuple[list[dict], str, str]:
+    if token:
+        try:
+            return load_from_tushare(token, stock_code, start_date), "tushare", ""
+        except Exception as exc:
+            print(f"[stock] Tushare failed, fallback to AkShare: {exc}")
+            rows = load_from_akshare(symbol, start_date)
+            return rows, "akshare_after_tushare_failed", str(exc)
+    return load_from_akshare(symbol, start_date), "akshare", ""
+
+
 def main() -> int:
     DATA_DIR.mkdir(exist_ok=True)
     try:
@@ -279,16 +293,16 @@ def main() -> int:
         start_date = os.getenv("START_DATE", "20100101").strip()
         symbol = stock_code.split(".")[0]
 
-        if token:
-            rows = load_from_tushare(token, stock_code, start_date)
-            source = "tushare"
-        else:
-            rows = load_from_akshare(symbol, start_date)
-            source = "akshare"
+        rows, source, tushare_error = load_stock_rows(token, stock_code, start_date, symbol)
         if not rows:
             raise RuntimeError("没有获取到可写入的股价数据")
         write_json(STOCK_FILE, rows)
-        message = "股价和估值数据更新成功" if source == "tushare" else "股价数据更新成功；AkShare 当前未补齐估值字段"
+        if source == "tushare":
+            message = "股价和估值数据更新成功"
+        elif source == "akshare_after_tushare_failed":
+            message = f"Tushare 估值数据获取失败，已回退 AkShare 股价；AkShare 当前未补齐估值字段：{tushare_error}"
+        else:
+            message = "股价数据更新成功；AkShare 当前未补齐估值字段"
         update_status(True, message, len(rows), source, rows)
         run_quality_audit()
         print(f"[stock] success: {len(rows)} records from {source}")
