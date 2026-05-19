@@ -38,7 +38,7 @@ PUBLIC_METRICS = [
     {"period": "2025H1", "reportType": "half", "revenue": 91093762554, "revenueYoY": 9.16, "netProfit": 45403000000, "netProfitYoY": 8.89, "eps": 36.15, "roe": 17.65, "grossMargin": 91.5, "netMargin": 49.84, "operatingCashFlow": 13119000000},
     {"period": "2025Q3", "reportType": "q3", "revenue": 130903889635, "revenueYoY": 6.32, "netProfit": 64627000000, "netProfitYoY": 6.25, "eps": 51.53, "roe": 26.37, "grossMargin": 91.29, "netMargin": 51.11, "operatingCashFlow": 38197000000},
     {"period": "2025", "reportType": "annual", "revenue": 172054171891, "revenueYoY": -1.2, "netProfit": 82320000000, "netProfitYoY": -4.53, "eps": 65.53, "roe": 32.0, "grossMargin": 91.3, "netMargin": 47.84, "operatingCashFlow": None},
-    {"period": "2026Q1", "reportType": "q1", "revenue": 54702912385, "revenueYoY": 6.34, "netProfit": 27243000000, "netProfitYoY": 1.47, "eps": 21.7545, "roe": 10.59, "grossMargin": 89.91, "netMargin": 49.8, "operatingCashFlow": 26910000000},
+    {"period": "2026Q1", "reportType": "q1", "revenue": 53909252220.51, "revenueYoY": 6.54, "netProfit": 27243000000, "netProfitYoY": 1.47, "eps": 21.76, "roe": 10.59, "grossMargin": 89.91, "netMargin": 49.8, "operatingCashFlow": 26910000000},
 ]
 
 
