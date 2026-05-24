@@ -1,47 +1,47 @@
 {
-  "updatedAt": "2026-05-23 23:43:33",
+  "updatedAt": "2026-05-24 23:45:19",
   "stock": {
-    "records": 3969,
+    "records": 3970,
     "dateRange": {
       "start": "2010-01-04",
-      "end": "2026-05-21"
+      "end": "2026-05-22"
     },
-    "latestDate": "2026-05-21",
+    "latestDate": "2026-05-22",
     "fieldCompleteness": {
       "close": {
         "field": "close",
-        "available": 3969,
-        "total": 3969,
+        "available": 3970,
+        "total": 3970,
         "rate": 1.0
       },
       "pe": {
         "field": "pe",
         "available": 0,
-        "total": 3969,
+        "total": 3970,
         "rate": 0.0
       },
       "peTtm": {
         "field": "peTtm",
         "available": 0,
-        "total": 3969,
+        "total": 3970,
         "rate": 0.0
       },
       "pb": {
         "field": "pb",
         "available": 0,
-        "total": 3969,
+        "total": 3970,
         "rate": 0.0
       },
       "dividendYield": {
         "field": "dividendYield",
         "available": 0,
-        "total": 3969,
+        "total": 3970,
         "rate": 0.0
       },
       "totalMarketCap": {
         "field": "totalMarketCap",
         "available": 0,
-        "total": 3969,
+        "total": 3970,
         "rate": 0.0
       }
     },
@@ -52,7 +52,7 @@
     "sourcePointRecords": 89,
     "estimatedTrendRecords": 8960,
     "realDisplayRecords": 74,
-    "matchedStockDateRecords": 41,
+    "matchedStockDateRecords": 42,
     "matchedStockDates": [
       "2010-12-31",
       "2011-12-01",
@@ -94,7 +94,8 @@
       "2026-05-18",
       "2026-05-19",
       "2026-05-20",
-      "2026-05-21"
+      "2026-05-21",
+      "2026-05-22"
     ],
     "enoughForFormalCorrelation": true
   },
