@@ -258,5 +258,31 @@
     },
     "source": "scripts/update_all.py",
     "status": "success"
+  },
+  {
+    "updatedAt": "2026-05-27 22:15:04",
+    "title": "数据自动更新完成",
+    "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
+    "changes": [
+      "stock: ok",
+      "winePrice: ok",
+      "financialReports: ok",
+      "dataQuality: ok"
+    ],
+    "dataStats": {
+      "winePrices": 9037,
+      "wineEstimatedPoints": 8960,
+      "wineRealDisplayPoints": 77,
+      "wineSourcePoints": 92,
+      "events": 26
+    },
+    "latestData": {
+      "latestWineDate": "2026-05-27",
+      "latestWinePrice": 1625,
+      "latestStockDate": "2026-05-27",
+      "latestFinancialPeriod": "2026Q1"
+    },
+    "source": "scripts/update_all.py",
+    "status": "success"
   }
 ]
