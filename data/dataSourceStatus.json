@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-05-27 22:15:04",
+  "updatedAt": "2026-05-28 22:17:30",
   "stock": {
-    "success": true,
-    "source": "akshare",
-    "updatedAt": "2026-05-27 22:14:56",
-    "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
+    "success": false,
+    "source": "tushare/akshare",
+    "updatedAt": "2026-05-28 22:17:03",
+    "message": "股价数据更新失败：HTTPSConnectionPool(host='push2his.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/stock/kline/get?fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61%2Cf116&ut=7eea3edcaed734bea9cbfc24409ed989&klt=101&fqt=0&secid=1.600519&beg=20100101&end=20260528 (Caused by NewConnectionError(\"HTTPSConnection(host='push2his.eastmoney.com', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))",
     "records": 3973,
     "valuationFields": {
       "source": "akshare price only",
@@ -42,7 +42,9 @@
           "rate": 0.0
         }
       }
-    }
+    },
+    "skipped": false,
+    "script": "update_stock_data.py"
   },
   "winePrice": {
     "historyRange": {
@@ -58,19 +60,20 @@
     "latestRealDate": "2026-05-27",
     "latestRealBottlePrice": 1625,
     "latestRealCasePrice": 1660,
-    "todayUpdated": true,
+    "todayUpdated": false,
     "predictionUsesRealSourcePointsOnly": true,
-    "success": true,
+    "success": false,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-05-27 22:14:58",
-    "message": "酒价更新成功 1 个来源",
-    "records": 9037
+    "updatedAt": "2026-05-28 22:17:23",
+    "message": "今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: HTTPSConnectionPool(host='www.jiangjiujie.com', port=443): Max retries exceeded with url: /quote/price-htm-itemid-36.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jiangjiujie.com', port=443) at 0x7f020160f2d0>, 'Connection to www.jiangjiujie.com timed out. (connect timeout=20)'))",
+    "records": 9037,
+    "script": "update_wine_price.py"
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-05-27 22:15:04",
+    "updatedAt": "2026-05-28 22:17:30",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 9,
     "structured": true,
@@ -89,18 +92,18 @@
   },
   "summary": {
     "stock": {
-      "success": true,
+      "success": false,
       "skipped": false,
-      "failed": false,
+      "failed": true,
       "script": "update_stock_data.py",
-      "message": "ok"
+      "message": "股价数据更新失败：HTTPSConnectionPool(host='push2his.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/stock/kline/get?fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61%2Cf116&ut=7eea3edcaed734bea9cbfc24409ed989&klt=101&fqt=0&secid=1.600519&beg=20100101&end=20260528 (Caused by NewConnectionError(\"HTTPSConnection(host='push2his.eastmoney.com', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))"
     },
     "winePrice": {
-      "success": true,
+      "success": false,
       "skipped": false,
-      "failed": false,
+      "failed": true,
       "script": "update_wine_price.py",
-      "message": "ok"
+      "message": "今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: HTTPSConnectionPool(host='www.jiangjiujie.com', port=443): Max retries exceeded with url: /quote/price-htm-itemid-36.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jiangjiujie.com', port=443) at 0x7f020160f2d0>, 'Connection to www.jiangjiujie.com timed out. (connect timeout=20)'))"
     },
     "financialReports": {
       "success": true,
@@ -119,7 +122,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-05-27 22:15:04",
+    "updatedAt": "2026-05-28 22:17:30",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,

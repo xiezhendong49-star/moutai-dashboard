@@ -284,5 +284,31 @@
     },
     "source": "scripts/update_all.py",
     "status": "success"
+  },
+  {
+    "updatedAt": "2026-05-28 22:17:30",
+    "title": "数据自动更新部分失败",
+    "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
+    "changes": [
+      "stock: 股价数据更新失败：HTTPSConnectionPool(host='push2his.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/stock/kline/get?fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61%2Cf116&ut=7eea3edcaed734bea9cbfc24409ed989&klt=101&fqt=0&secid=1.600519&beg=20100101&end=20260528 (Caused by NewConnectionError(\"HTTPSConnection(host='push2his.eastmoney.com', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))",
+      "winePrice: 今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: HTTPSConnectionPool(host='www.jiangjiujie.com', port=443): Max retries exceeded with url: /quote/price-htm-itemid-36.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jiangjiujie.com', port=443) at 0x7f020160f2d0>, 'Connection to www.jiangjiujie.com timed out. (connect timeout=20)'))",
+      "financialReports: ok",
+      "dataQuality: ok"
+    ],
+    "dataStats": {
+      "winePrices": 9037,
+      "wineEstimatedPoints": 8960,
+      "wineRealDisplayPoints": 77,
+      "wineSourcePoints": 92,
+      "events": 26
+    },
+    "latestData": {
+      "latestWineDate": "2026-05-27",
+      "latestWinePrice": 1625,
+      "latestStockDate": "2026-05-27",
+      "latestFinancialPeriod": "2026Q1"
+    },
+    "source": "scripts/update_all.py",
+    "status": "failed"
   }
 ]
