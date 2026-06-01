@@ -1,58 +1,58 @@
 {
-  "updatedAt": "2026-05-31 21:30:10",
+  "updatedAt": "2026-06-01 22:39:35",
   "stock": {
-    "records": 3975,
+    "records": 3976,
     "dateRange": {
       "start": "2010-01-04",
-      "end": "2026-05-29"
+      "end": "2026-06-01"
     },
-    "latestDate": "2026-05-29",
+    "latestDate": "2026-06-01",
     "fieldCompleteness": {
       "close": {
         "field": "close",
-        "available": 3975,
-        "total": 3975,
+        "available": 3976,
+        "total": 3976,
         "rate": 1.0
       },
       "pe": {
         "field": "pe",
         "available": 0,
-        "total": 3975,
+        "total": 3976,
         "rate": 0.0
       },
       "peTtm": {
         "field": "peTtm",
         "available": 0,
-        "total": 3975,
+        "total": 3976,
         "rate": 0.0
       },
       "pb": {
         "field": "pb",
         "available": 0,
-        "total": 3975,
+        "total": 3976,
         "rate": 0.0
       },
       "dividendYield": {
         "field": "dividendYield",
         "available": 0,
-        "total": 3975,
+        "total": 3976,
         "rate": 0.0
       },
       "totalMarketCap": {
         "field": "totalMarketCap",
         "available": 0,
-        "total": 3975,
+        "total": 3976,
         "rate": 0.0
       }
     },
     "peTtmEnoughForFormalPercentile": false
   },
   "winePrice": {
-    "displayRecords": 9039,
-    "sourcePointRecords": 94,
+    "displayRecords": 9040,
+    "sourcePointRecords": 95,
     "estimatedTrendRecords": 8960,
-    "realDisplayRecords": 79,
-    "matchedStockDateRecords": 46,
+    "realDisplayRecords": 80,
+    "matchedStockDateRecords": 47,
     "matchedStockDates": [
       "2010-12-31",
       "2011-12-01",
@@ -99,7 +99,8 @@
       "2026-05-25",
       "2026-05-26",
       "2026-05-27",
-      "2026-05-29"
+      "2026-05-29",
+      "2026-06-01"
     ],
     "enoughForFormalCorrelation": true
   },
