@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-06-10 22:23:37",
+  "updatedAt": "2026-06-11 22:20:48",
   "stock": {
-    "success": false,
-    "source": "tushare/akshare",
-    "updatedAt": "2026-06-10 22:23:28",
-    "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
-    "records": 3981,
+    "success": true,
+    "source": "akshare",
+    "updatedAt": "2026-06-11 22:20:34",
+    "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
+    "records": 3984,
     "valuationFields": {
       "source": "akshare price only",
       "filled": false,
@@ -13,51 +13,49 @@
       "fields": {
         "pe": {
           "available": 0,
-          "total": 3981,
+          "total": 3984,
           "rate": 0.0
         },
         "peTtm": {
           "available": 0,
-          "total": 3981,
+          "total": 3984,
           "rate": 0.0
         },
         "pb": {
           "available": 0,
-          "total": 3981,
+          "total": 3984,
           "rate": 0.0
         },
         "dividendYield": {
           "available": 0,
-          "total": 3981,
+          "total": 3984,
           "rate": 0.0
         },
         "dividendYieldTtm": {
           "available": 0,
-          "total": 3981,
+          "total": 3984,
           "rate": 0.0
         },
         "totalMarketCap": {
           "available": 0,
-          "total": 3981,
+          "total": 3984,
           "rate": 0.0
         }
       }
-    },
-    "skipped": false,
-    "script": "update_stock_data.py"
+    }
   },
   "winePrice": {
     "historyRange": {
       "start": "2001-08-27",
-      "end": "2026-06-10"
+      "end": "2026-06-11"
     },
-    "displayRecords": 9048,
+    "displayRecords": 9049,
     "estimatedRecords": 8960,
-    "realDisplayRecords": 88,
-    "sourcePointLedgerRecords": 103,
-    "sourcePointRecords": 103,
-    "realRecords": 103,
-    "latestRealDate": "2026-06-10",
+    "realDisplayRecords": 89,
+    "sourcePointLedgerRecords": 104,
+    "sourcePointRecords": 104,
+    "realRecords": 104,
+    "latestRealDate": "2026-06-11",
     "latestRealBottlePrice": 1625,
     "latestRealCasePrice": 1665,
     "todayUpdated": true,
@@ -65,14 +63,14 @@
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-06-10 22:23:31",
+    "updatedAt": "2026-06-11 22:20:38",
     "message": "酒价更新成功 1 个来源",
-    "records": 9048
+    "records": 9049
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-06-10 22:23:36",
+    "updatedAt": "2026-06-11 22:20:48",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 9,
     "structured": true,
@@ -91,11 +89,11 @@
   },
   "summary": {
     "stock": {
-      "success": false,
+      "success": true,
       "skipped": false,
-      "failed": true,
+      "failed": false,
       "script": "update_stock_data.py",
-      "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+      "message": "ok"
     },
     "winePrice": {
       "success": true,
@@ -121,14 +119,14 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-06-10 22:23:37",
+    "updatedAt": "2026-06-11 22:20:48",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
     "pbCompleteness": 0.0,
     "dividendYieldCompleteness": 0.0,
     "totalMarketCapCompleteness": 0.0,
-    "wineStockMatchedDates": 52,
+    "wineStockMatchedDates": 55,
     "warnings": [
       "估值字段不足，暂不输出正式 PE 分位"
     ]
