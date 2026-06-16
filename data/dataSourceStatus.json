@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-06-15 22:32:09",
+  "updatedAt": "2026-06-16 22:28:59",
   "stock": {
     "success": false,
     "source": "tushare/akshare",
-    "updatedAt": "2026-06-15 22:32:00",
+    "updatedAt": "2026-06-16 22:28:49",
     "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
     "records": 3985,
     "valuationFields": {
@@ -49,15 +49,15 @@
   "winePrice": {
     "historyRange": {
       "start": "2001-08-27",
-      "end": "2026-06-15"
+      "end": "2026-06-16"
     },
-    "displayRecords": 9051,
+    "displayRecords": 9052,
     "estimatedRecords": 8960,
-    "realDisplayRecords": 91,
-    "sourcePointLedgerRecords": 106,
-    "sourcePointRecords": 106,
-    "realRecords": 106,
-    "latestRealDate": "2026-06-15",
+    "realDisplayRecords": 92,
+    "sourcePointLedgerRecords": 107,
+    "sourcePointRecords": 107,
+    "realRecords": 107,
+    "latestRealDate": "2026-06-16",
     "latestRealBottlePrice": 1625,
     "latestRealCasePrice": 1660,
     "todayUpdated": true,
@@ -65,14 +65,14 @@
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-06-15 22:32:02",
+    "updatedAt": "2026-06-16 22:28:52",
     "message": "酒价更新成功 1 个来源",
-    "records": 9051
+    "records": 9052
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-06-15 22:32:08",
+    "updatedAt": "2026-06-16 22:28:59",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 9,
     "structured": true,
@@ -121,7 +121,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-06-15 22:32:08",
+    "updatedAt": "2026-06-16 22:28:59",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
