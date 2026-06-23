@@ -1,31 +1,5 @@
 [
   {
-    "updatedAt": "2026-05-24 23:45:19",
-    "title": "数据自动更新完成",
-    "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
-    "changes": [
-      "stock: ok",
-      "winePrice: ok",
-      "financialReports: ok",
-      "dataQuality: ok"
-    ],
-    "dataStats": {
-      "winePrices": 9034,
-      "wineEstimatedPoints": 8960,
-      "wineRealDisplayPoints": 74,
-      "wineSourcePoints": 89,
-      "events": 26
-    },
-    "latestData": {
-      "latestWineDate": "2026-05-23",
-      "latestWinePrice": 1655,
-      "latestStockDate": "2026-05-22",
-      "latestFinancialPeriod": "2026Q1"
-    },
-    "source": "scripts/update_all.py",
-    "status": "success"
-  },
-  {
     "updatedAt": "2026-05-26 00:16:07",
     "title": "数据自动更新部分失败",
     "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
@@ -760,6 +734,32 @@
     "changes": [
       "stock: 股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
       "winePrice: ok",
+      "financialReports: ok",
+      "dataQuality: ok"
+    ],
+    "dataStats": {
+      "winePrices": 9056,
+      "wineEstimatedPoints": 8960,
+      "wineRealDisplayPoints": 96,
+      "wineSourcePoints": 111,
+      "events": 26
+    },
+    "latestData": {
+      "latestWineDate": "2026-06-22",
+      "latestWinePrice": 1620,
+      "latestStockDate": "2026-06-18",
+      "latestFinancialPeriod": "2026Q1"
+    },
+    "source": "scripts/update_all.py",
+    "status": "failed"
+  },
+  {
+    "updatedAt": "2026-06-23 21:54:15",
+    "title": "数据自动更新部分失败",
+    "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
+    "changes": [
+      "stock: 股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+      "winePrice: 今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: 酱酒界酱酒行情监测中心 价格校验失败：2026-06-23 原箱价 1610 低于散瓶价 1625",
       "financialReports: ok",
       "dataQuality: ok"
     ],
