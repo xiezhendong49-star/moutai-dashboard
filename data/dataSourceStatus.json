@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-06-23 21:54:15",
+  "updatedAt": "2026-06-24 21:51:33",
   "stock": {
     "success": false,
     "source": "tushare/akshare",
-    "updatedAt": "2026-06-23 21:54:03",
+    "updatedAt": "2026-06-24 21:51:22",
     "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
     "records": 3989,
     "valuationFields": {
@@ -65,15 +65,15 @@
     "success": false,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-06-23 21:54:06",
-    "message": "今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: 酱酒界酱酒行情监测中心 价格校验失败：2026-06-23 原箱价 1610 低于散瓶价 1625",
+    "updatedAt": "2026-06-24 21:51:25",
+    "message": "今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: 酱酒界酱酒行情监测中心 价格校验失败：2026-06-24 原箱价 1610 低于散瓶价 1625",
     "records": 9056,
     "script": "update_wine_price.py"
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-06-23 21:54:15",
+    "updatedAt": "2026-06-24 21:51:32",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 9,
     "structured": true,
@@ -103,7 +103,7 @@
       "skipped": false,
       "failed": true,
       "script": "update_wine_price.py",
-      "message": "今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: 酱酒界酱酒行情监测中心 价格校验失败：2026-06-23 原箱价 1610 低于散瓶价 1625"
+      "message": "今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: 酱酒界酱酒行情监测中心 价格校验失败：2026-06-24 原箱价 1610 低于散瓶价 1625"
     },
     "financialReports": {
       "success": true,
@@ -122,7 +122,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-06-23 21:54:15",
+    "updatedAt": "2026-06-24 21:51:33",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
