@@ -1,31 +1,5 @@
 [
   {
-    "updatedAt": "2026-05-27 22:15:04",
-    "title": "数据自动更新完成",
-    "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
-    "changes": [
-      "stock: ok",
-      "winePrice: ok",
-      "financialReports: ok",
-      "dataQuality: ok"
-    ],
-    "dataStats": {
-      "winePrices": 9037,
-      "wineEstimatedPoints": 8960,
-      "wineRealDisplayPoints": 77,
-      "wineSourcePoints": 92,
-      "events": 26
-    },
-    "latestData": {
-      "latestWineDate": "2026-05-27",
-      "latestWinePrice": 1625,
-      "latestStockDate": "2026-05-27",
-      "latestFinancialPeriod": "2026Q1"
-    },
-    "source": "scripts/update_all.py",
-    "status": "success"
-  },
-  {
     "updatedAt": "2026-05-28 22:17:30",
     "title": "数据自动更新部分失败",
     "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
@@ -778,5 +752,31 @@
     },
     "source": "scripts/update_all.py",
     "status": "success"
+  },
+  {
+    "updatedAt": "2026-06-26 21:45:08",
+    "title": "数据自动更新部分失败",
+    "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
+    "changes": [
+      "stock: 股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+      "winePrice: ok",
+      "financialReports: ok",
+      "dataQuality: ok"
+    ],
+    "dataStats": {
+      "winePrices": 9058,
+      "wineEstimatedPoints": 8960,
+      "wineRealDisplayPoints": 98,
+      "wineSourcePoints": 113,
+      "events": 26
+    },
+    "latestData": {
+      "latestWineDate": "2026-06-26",
+      "latestWinePrice": 1600,
+      "latestStockDate": "2026-06-25",
+      "latestFinancialPeriod": "2026Q1"
+    },
+    "source": "scripts/update_all.py",
+    "status": "failed"
   }
 ]
