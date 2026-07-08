@@ -2539,5 +2539,26 @@
     "estimationMethod": "actual_source_point",
     "confidence": "高",
     "note": "酱酒界页面披露的历史价格；批发参考价，不含税费/物流/人工等成本"
+  },
+  {
+    "date": "2026-07-08",
+    "product": "53度飞天茅台 500ml 散瓶/散飞",
+    "year": "主口径",
+    "spec": "500ml",
+    "bottlePrice": 1625,
+    "casePrice": 1640,
+    "priceType": "散瓶/散飞展示价",
+    "source": "酱酒界酱酒行情监测中心",
+    "sourceUrl": "https://www.jiangjiujie.com/quote/product.php",
+    "publishedAt": "2026-07-08",
+    "updatedAt": "2026-07-08 21:36:06",
+    "verified": true,
+    "sample": false,
+    "estimated": false,
+    "sourcePoint": true,
+    "stage": "每日自动更新",
+    "estimationMethod": "actual_source_point",
+    "confidence": "高",
+    "note": "酱酒界页面披露的历史价格；批发参考价，不含税费/物流/人工等成本"
   }
 ]
