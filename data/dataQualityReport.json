@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-24 21:33:44",
+  "updatedAt": "2026-07-25 21:13:51",
   "stock": {
     "records": 4014,
     "dateRange": {
@@ -48,10 +48,10 @@
     "peTtmEnoughForFormalPercentile": false
   },
   "winePrice": {
-    "displayRecords": 9081,
-    "sourcePointRecords": 136,
+    "displayRecords": 9082,
+    "sourcePointRecords": 137,
     "estimatedTrendRecords": 8960,
-    "realDisplayRecords": 121,
+    "realDisplayRecords": 122,
     "matchedStockDateRecords": 81,
     "matchedStockDates": [
       "2010-12-31",
