@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-08-05 21:39:42",
+  "updatedAt": "2026-08-07 00:56:15",
   "stock": {
     "success": true,
     "source": "akshare",
-    "updatedAt": "2026-08-05 21:39:36",
+    "updatedAt": "2026-08-07 00:56:08",
     "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
-    "records": 4022,
+    "records": 4023,
     "valuationFields": {
       "source": "akshare price only",
       "filled": false,
@@ -13,32 +13,32 @@
       "fields": {
         "pe": {
           "available": 0,
-          "total": 4022,
+          "total": 4023,
           "rate": 0.0
         },
         "peTtm": {
           "available": 0,
-          "total": 4022,
+          "total": 4023,
           "rate": 0.0
         },
         "pb": {
           "available": 0,
-          "total": 4022,
+          "total": 4023,
           "rate": 0.0
         },
         "dividendYield": {
           "available": 0,
-          "total": 4022,
+          "total": 4023,
           "rate": 0.0
         },
         "dividendYieldTtm": {
           "available": 0,
-          "total": 4022,
+          "total": 4023,
           "rate": 0.0
         },
         "totalMarketCap": {
           "available": 0,
-          "total": 4022,
+          "total": 4023,
           "rate": 0.0
         }
       }
@@ -47,30 +47,30 @@
   "winePrice": {
     "historyRange": {
       "start": "2001-08-27",
-      "end": "2026-08-05"
+      "end": "2026-08-06"
     },
-    "displayRecords": 9093,
+    "displayRecords": 9094,
     "estimatedRecords": 8960,
-    "realDisplayRecords": 133,
-    "sourcePointLedgerRecords": 148,
-    "sourcePointRecords": 148,
-    "realRecords": 148,
-    "latestRealDate": "2026-08-05",
-    "latestRealBottlePrice": 1695,
-    "latestRealCasePrice": 1710,
-    "todayUpdated": true,
+    "realDisplayRecords": 134,
+    "sourcePointLedgerRecords": 149,
+    "sourcePointRecords": 149,
+    "realRecords": 149,
+    "latestRealDate": "2026-08-06",
+    "latestRealBottlePrice": 1700,
+    "latestRealCasePrice": 1720,
+    "todayUpdated": false,
     "predictionUsesRealSourcePointsOnly": true,
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-08-05 21:39:38",
+    "updatedAt": "2026-08-07 00:56:11",
     "message": "酒价更新成功 1 个来源",
-    "records": 9093
+    "records": 9094
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-08-05 21:39:42",
+    "updatedAt": "2026-08-07 00:56:15",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 9,
     "structured": true,
@@ -119,14 +119,14 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-08-05 21:39:42",
+    "updatedAt": "2026-08-07 00:56:15",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
     "pbCompleteness": 0.0,
     "dividendYieldCompleteness": 0.0,
     "totalMarketCapCompleteness": 0.0,
-    "wineStockMatchedDates": 89,
+    "wineStockMatchedDates": 90,
     "warnings": [
       "估值字段不足，暂不输出正式 PE 分位"
     ]
