@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-10 21:07:40",
+  "updatedAt": "2026-08-11 21:10:47",
   "stock": {
-    "success": true,
-    "source": "akshare",
-    "updatedAt": "2026-08-10 21:07:32",
-    "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
+    "success": false,
+    "source": "tushare/akshare",
+    "updatedAt": "2026-08-11 21:10:41",
+    "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
     "records": 4025,
     "valuationFields": {
       "source": "akshare price only",
@@ -42,35 +42,37 @@
           "rate": 0.0
         }
       }
-    }
+    },
+    "skipped": false,
+    "script": "update_stock_data.py"
   },
   "winePrice": {
     "historyRange": {
       "start": "2001-08-27",
-      "end": "2026-08-10"
+      "end": "2026-08-11"
     },
-    "displayRecords": 9098,
+    "displayRecords": 9099,
     "estimatedRecords": 8960,
-    "realDisplayRecords": 138,
-    "sourcePointLedgerRecords": 153,
-    "sourcePointRecords": 153,
-    "realRecords": 153,
-    "latestRealDate": "2026-08-10",
+    "realDisplayRecords": 139,
+    "sourcePointLedgerRecords": 154,
+    "sourcePointRecords": 154,
+    "realRecords": 154,
+    "latestRealDate": "2026-08-11",
     "latestRealBottlePrice": 1715,
-    "latestRealCasePrice": 1730,
+    "latestRealCasePrice": 1725,
     "todayUpdated": true,
     "predictionUsesRealSourcePointsOnly": true,
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-08-10 21:07:35",
+    "updatedAt": "2026-08-11 21:10:43",
     "message": "酒价更新成功 1 个来源",
-    "records": 9098
+    "records": 9099
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-08-10 21:07:40",
+    "updatedAt": "2026-08-11 21:10:47",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 9,
     "structured": true,
@@ -89,11 +91,11 @@
   },
   "summary": {
     "stock": {
-      "success": true,
+      "success": false,
       "skipped": false,
-      "failed": false,
+      "failed": true,
       "script": "update_stock_data.py",
-      "message": "ok"
+      "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
     },
     "winePrice": {
       "success": true,
@@ -119,7 +121,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-08-10 21:07:40",
+    "updatedAt": "2026-08-11 21:10:47",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
