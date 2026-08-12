@@ -1,31 +1,5 @@
 [
   {
-    "updatedAt": "2026-07-13 21:26:07",
-    "title": "数据自动更新完成",
-    "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
-    "changes": [
-      "stock: ok",
-      "winePrice: ok",
-      "financialReports: ok",
-      "dataQuality: ok"
-    ],
-    "dataStats": {
-      "winePrices": 9071,
-      "wineEstimatedPoints": 8960,
-      "wineRealDisplayPoints": 111,
-      "wineSourcePoints": 126,
-      "events": 26
-    },
-    "latestData": {
-      "latestWineDate": "2026-07-13",
-      "latestWinePrice": 1635,
-      "latestStockDate": "2026-07-13",
-      "latestFinancialPeriod": "2026Q1"
-    },
-    "source": "scripts/update_all.py",
-    "status": "success"
-  },
-  {
     "updatedAt": "2026-07-14 21:27:47",
     "title": "数据自动更新完成",
     "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
@@ -778,5 +752,31 @@
     },
     "source": "scripts/update_all.py",
     "status": "failed"
+  },
+  {
+    "updatedAt": "2026-08-12 21:09:46",
+    "title": "数据自动更新完成",
+    "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
+    "changes": [
+      "stock: ok",
+      "winePrice: ok",
+      "financialReports: ok",
+      "dataQuality: ok"
+    ],
+    "dataStats": {
+      "winePrices": 9100,
+      "wineEstimatedPoints": 8960,
+      "wineRealDisplayPoints": 140,
+      "wineSourcePoints": 155,
+      "events": 26
+    },
+    "latestData": {
+      "latestWineDate": "2026-08-12",
+      "latestWinePrice": 1705,
+      "latestStockDate": "2026-08-12",
+      "latestFinancialPeriod": "2026Q1"
+    },
+    "source": "scripts/update_all.py",
+    "status": "success"
   }
 ]
