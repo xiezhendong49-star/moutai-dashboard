@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-08-14 20:51:36",
+  "updatedAt": "2026-08-15 20:44:16",
   "stock": {
     "success": true,
     "source": "akshare",
-    "updatedAt": "2026-08-14 20:51:30",
+    "updatedAt": "2026-08-15 20:44:07",
     "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
     "records": 4029,
     "valuationFields": {
@@ -47,15 +47,15 @@
   "winePrice": {
     "historyRange": {
       "start": "2001-08-27",
-      "end": "2026-08-14"
+      "end": "2026-08-15"
     },
-    "displayRecords": 9102,
+    "displayRecords": 9103,
     "estimatedRecords": 8960,
-    "realDisplayRecords": 142,
-    "sourcePointLedgerRecords": 157,
-    "sourcePointRecords": 157,
-    "realRecords": 157,
-    "latestRealDate": "2026-08-14",
+    "realDisplayRecords": 143,
+    "sourcePointLedgerRecords": 158,
+    "sourcePointRecords": 158,
+    "realRecords": 158,
+    "latestRealDate": "2026-08-15",
     "latestRealBottlePrice": 1690,
     "latestRealCasePrice": 1715,
     "todayUpdated": true,
@@ -63,14 +63,14 @@
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-08-14 20:51:32",
+    "updatedAt": "2026-08-15 20:44:09",
     "message": "酒价更新成功 1 个来源",
-    "records": 9102
+    "records": 9103
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-08-14 20:51:36",
+    "updatedAt": "2026-08-15 20:44:16",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 10,
     "structured": true,
@@ -119,7 +119,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-08-14 20:51:36",
+    "updatedAt": "2026-08-15 20:44:16",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
