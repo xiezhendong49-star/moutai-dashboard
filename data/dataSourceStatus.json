@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-08-16 20:43:35",
+  "updatedAt": "2026-08-17 20:49:13",
   "stock": {
     "success": false,
     "source": "tushare/akshare",
-    "updatedAt": "2026-08-16 20:43:27",
+    "updatedAt": "2026-08-17 20:49:06",
     "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
     "records": 4029,
     "valuationFields": {
@@ -49,30 +49,30 @@
   "winePrice": {
     "historyRange": {
       "start": "2001-08-27",
-      "end": "2026-08-15"
+      "end": "2026-08-17"
     },
-    "displayRecords": 9103,
+    "displayRecords": 9104,
     "estimatedRecords": 8960,
-    "realDisplayRecords": 143,
-    "sourcePointLedgerRecords": 158,
-    "sourcePointRecords": 158,
-    "realRecords": 158,
-    "latestRealDate": "2026-08-15",
-    "latestRealBottlePrice": 1690,
+    "realDisplayRecords": 144,
+    "sourcePointLedgerRecords": 159,
+    "sourcePointRecords": 159,
+    "realRecords": 159,
+    "latestRealDate": "2026-08-17",
+    "latestRealBottlePrice": 1705,
     "latestRealCasePrice": 1715,
-    "todayUpdated": false,
+    "todayUpdated": true,
     "predictionUsesRealSourcePointsOnly": true,
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-08-16 20:43:29",
+    "updatedAt": "2026-08-17 20:49:08",
     "message": "酒价更新成功 1 个来源",
-    "records": 9103
+    "records": 9104
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-08-16 20:43:34",
+    "updatedAt": "2026-08-17 20:49:13",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 10,
     "structured": true,
@@ -80,7 +80,7 @@
     "note": "当前财报结构化字段已补齐，但主要是 provisional 数据，正式研究需以官方报告核验。",
     "metricsCoverage": {
       "epsAvailable": 10,
-      "epsVerified": 0,
+      "epsVerified": 1,
       "revenueAvailable": 9,
       "revenueVerified": 0,
       "netProfitAvailable": 9,
@@ -121,7 +121,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-08-16 20:43:35",
+    "updatedAt": "2026-08-17 20:49:13",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-16 20:43:35",
+  "updatedAt": "2026-08-17 20:49:13",
   "stock": {
     "records": 4029,
     "dateRange": {
@@ -48,10 +48,10 @@
     "peTtmEnoughForFormalPercentile": false
   },
   "winePrice": {
-    "displayRecords": 9103,
-    "sourcePointRecords": 158,
+    "displayRecords": 9104,
+    "sourcePointRecords": 159,
     "estimatedTrendRecords": 8960,
-    "realDisplayRecords": 143,
+    "realDisplayRecords": 144,
     "matchedStockDateRecords": 96,
     "matchedStockDates": [
       "2010-12-31",
@@ -156,13 +156,13 @@
   "financialReports": {
     "records": 10,
     "epsAvailable": 10,
-    "epsVerified": 0,
+    "epsVerified": 1,
     "revenueAvailable": 9,
     "revenueVerified": 0,
     "netProfitAvailable": 9,
     "netProfitVerified": 0,
     "provisionalRecords": 9,
-    "officialVerifiedRecords": 0,
+    "officialVerifiedRecords": 1,
     "note": "当前财报结构化字段已补齐，但主要是 provisional 数据，正式研究需以官方报告核验。"
   },
   "events": {
