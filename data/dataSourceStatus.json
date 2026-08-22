@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-08-21 20:45:27",
+  "updatedAt": "2026-08-22 20:44:36",
   "stock": {
-    "success": true,
-    "source": "akshare",
-    "updatedAt": "2026-08-21 20:45:20",
-    "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
+    "success": false,
+    "source": "tushare/akshare",
+    "updatedAt": "2026-08-22 20:44:29",
+    "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
     "records": 4034,
     "valuationFields": {
       "source": "akshare price only",
@@ -42,7 +42,9 @@
           "rate": 0.0
         }
       }
-    }
+    },
+    "skipped": false,
+    "script": "update_stock_data.py"
   },
   "winePrice": {
     "historyRange": {
@@ -58,19 +60,19 @@
     "latestRealDate": "2026-08-21",
     "latestRealBottlePrice": 1705,
     "latestRealCasePrice": 1715,
-    "todayUpdated": true,
+    "todayUpdated": false,
     "predictionUsesRealSourcePointsOnly": true,
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-08-21 20:45:22",
+    "updatedAt": "2026-08-22 20:44:31",
     "message": "酒价更新成功 1 个来源",
     "records": 9107
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-08-21 20:45:27",
+    "updatedAt": "2026-08-22 20:44:35",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 10,
     "structured": true,
@@ -89,11 +91,11 @@
   },
   "summary": {
     "stock": {
-      "success": true,
+      "success": false,
       "skipped": false,
-      "failed": false,
+      "failed": true,
       "script": "update_stock_data.py",
-      "message": "ok"
+      "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
     },
     "winePrice": {
       "success": true,
@@ -119,7 +121,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-08-21 20:45:27",
+    "updatedAt": "2026-08-22 20:44:36",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
