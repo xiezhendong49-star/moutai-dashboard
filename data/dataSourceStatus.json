@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-09-10 22:40:51",
+  "updatedAt": "2026-09-11 22:43:29",
   "stock": {
     "success": false,
     "source": "tushare/akshare",
-    "updatedAt": "2026-09-10 22:40:44",
+    "updatedAt": "2026-09-11 22:40:42",
     "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
     "records": 4047,
     "valuationFields": {
@@ -49,31 +49,31 @@
   "winePrice": {
     "historyRange": {
       "start": "2001-08-27",
-      "end": "2026-09-10"
+      "end": "2026-09-11"
     },
-    "displayRecords": 9122,
+    "displayRecords": 9123,
     "estimatedRecords": 8960,
-    "realDisplayRecords": 162,
-    "sourcePointLedgerRecords": 177,
-    "sourcePointRecords": 177,
-    "realRecords": 177,
-    "latestRealDate": "2026-09-10",
-    "latestRealBottlePrice": 1725,
-    "latestRealCasePrice": 1740,
+    "realDisplayRecords": 163,
+    "sourcePointLedgerRecords": 178,
+    "sourcePointRecords": 178,
+    "realRecords": 178,
+    "latestRealDate": "2026-09-11",
+    "latestRealBottlePrice": 1720,
+    "latestRealCasePrice": 1735,
     "todayUpdated": true,
     "predictionUsesRealSourcePointsOnly": true,
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-09-10 22:40:46",
+    "updatedAt": "2026-09-11 22:40:44",
     "message": "酒价更新成功 1 个来源",
-    "records": 9122
+    "records": 9123
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-09-10 22:40:50",
-    "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
+    "updatedAt": "2026-09-11 22:43:29",
+    "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验；部分列表/自动源失败：https://www.moutaichina.com/mtgf/tzzgx/cwbg/index.html: HTTPSConnectionPool(host='www.moutaichina.com', port=443): Max retries exceeded with url: /mtgf/tzzgx/cwbg/index.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.moutaichina.com', port=443) at 0x7f90cd54d910>, 'Connection to www.moutaichina.com timed out. (connect timeout=20)'))",
     "records": 10,
     "structured": true,
     "provisional": true,
@@ -121,7 +121,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-09-10 22:40:51",
+    "updatedAt": "2026-09-11 22:43:29",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
