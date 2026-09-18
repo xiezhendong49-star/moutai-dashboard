@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-09-17 22:56:24",
+  "updatedAt": "2026-09-18 22:46:40",
   "stock": {
     "success": true,
     "source": "akshare",
-    "updatedAt": "2026-09-17 22:56:15",
+    "updatedAt": "2026-09-18 22:41:14",
     "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
-    "records": 4053,
+    "records": 4054,
     "valuationFields": {
       "source": "akshare price only",
       "filled": false,
@@ -13,32 +13,32 @@
       "fields": {
         "pe": {
           "available": 0,
-          "total": 4053,
+          "total": 4054,
           "rate": 0.0
         },
         "peTtm": {
           "available": 0,
-          "total": 4053,
+          "total": 4054,
           "rate": 0.0
         },
         "pb": {
           "available": 0,
-          "total": 4053,
+          "total": 4054,
           "rate": 0.0
         },
         "dividendYield": {
           "available": 0,
-          "total": 4053,
+          "total": 4054,
           "rate": 0.0
         },
         "dividendYieldTtm": {
           "available": 0,
-          "total": 4053,
+          "total": 4054,
           "rate": 0.0
         },
         "totalMarketCap": {
           "available": 0,
-          "total": 4053,
+          "total": 4054,
           "rate": 0.0
         }
       }
@@ -47,15 +47,15 @@
   "winePrice": {
     "historyRange": {
       "start": "2001-08-27",
-      "end": "2026-09-17"
+      "end": "2026-09-18"
     },
-    "displayRecords": 9128,
+    "displayRecords": 9129,
     "estimatedRecords": 8960,
-    "realDisplayRecords": 168,
-    "sourcePointLedgerRecords": 183,
-    "sourcePointRecords": 183,
-    "realRecords": 183,
-    "latestRealDate": "2026-09-17",
+    "realDisplayRecords": 169,
+    "sourcePointLedgerRecords": 184,
+    "sourcePointRecords": 184,
+    "realRecords": 184,
+    "latestRealDate": "2026-09-18",
     "latestRealBottlePrice": 1730,
     "latestRealCasePrice": 1745,
     "todayUpdated": true,
@@ -63,15 +63,15 @@
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-09-17 22:56:18",
+    "updatedAt": "2026-09-18 22:41:16",
     "message": "酒价更新成功 1 个来源",
-    "records": 9128
+    "records": 9129
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-09-17 22:56:24",
-    "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
+    "updatedAt": "2026-09-18 22:46:40",
+    "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验；部分列表/自动源失败：https://www.moutaichina.com/mtgf/tzzgx/cwbg/index.html: HTTPSConnectionPool(host='www.moutaichina.com', port=443): Max retries exceeded with url: /mtgf/tzzgx/cwbg/index.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.moutaichina.com', port=443) at 0x7fbad2c40a90>, 'Connection to www.moutaichina.com timed out. (connect timeout=20)'))；https://www.moutaichina.com/mtgf/tzzgx/gsgg/index.html: HTTPSConnectionPool(host='www.moutaichina.com', port=443): Max retries exceeded with url: /mtgf/tzzgx/gsgg/index.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.moutaichina.com', port=443) at 0x7fbad1b0bdd0>, 'Connection to www.moutaichina.com timed out. (connect timeout=20)'))",
     "records": 10,
     "structured": true,
     "provisional": true,
@@ -119,14 +119,14 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-09-17 22:56:24",
+    "updatedAt": "2026-09-18 22:46:40",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
     "pbCompleteness": 0.0,
     "dividendYieldCompleteness": 0.0,
     "totalMarketCapCompleteness": 0.0,
-    "wineStockMatchedDates": 117,
+    "wineStockMatchedDates": 118,
     "warnings": [
       "估值字段不足，暂不输出正式 PE 分位"
     ]
