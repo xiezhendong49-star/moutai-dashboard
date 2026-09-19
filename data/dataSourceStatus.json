@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-18 22:46:40",
+  "updatedAt": "2026-09-19 22:22:04",
   "stock": {
-    "success": true,
-    "source": "akshare",
-    "updatedAt": "2026-09-18 22:41:14",
-    "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
+    "success": false,
+    "source": "tushare/akshare",
+    "updatedAt": "2026-09-19 22:21:53",
+    "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
     "records": 4054,
     "valuationFields": {
       "source": "akshare price only",
@@ -42,36 +42,38 @@
           "rate": 0.0
         }
       }
-    }
+    },
+    "skipped": false,
+    "script": "update_stock_data.py"
   },
   "winePrice": {
     "historyRange": {
       "start": "2001-08-27",
-      "end": "2026-09-18"
+      "end": "2026-09-19"
     },
-    "displayRecords": 9129,
+    "displayRecords": 9130,
     "estimatedRecords": 8960,
-    "realDisplayRecords": 169,
-    "sourcePointLedgerRecords": 184,
-    "sourcePointRecords": 184,
-    "realRecords": 184,
-    "latestRealDate": "2026-09-18",
+    "realDisplayRecords": 170,
+    "sourcePointLedgerRecords": 185,
+    "sourcePointRecords": 185,
+    "realRecords": 185,
+    "latestRealDate": "2026-09-19",
     "latestRealBottlePrice": 1730,
-    "latestRealCasePrice": 1745,
+    "latestRealCasePrice": 1755,
     "todayUpdated": true,
     "predictionUsesRealSourcePointsOnly": true,
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-09-18 22:41:16",
+    "updatedAt": "2026-09-19 22:21:55",
     "message": "酒价更新成功 1 个来源",
-    "records": 9129
+    "records": 9130
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-09-18 22:46:40",
-    "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验；部分列表/自动源失败：https://www.moutaichina.com/mtgf/tzzgx/cwbg/index.html: HTTPSConnectionPool(host='www.moutaichina.com', port=443): Max retries exceeded with url: /mtgf/tzzgx/cwbg/index.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.moutaichina.com', port=443) at 0x7fbad2c40a90>, 'Connection to www.moutaichina.com timed out. (connect timeout=20)'))；https://www.moutaichina.com/mtgf/tzzgx/gsgg/index.html: HTTPSConnectionPool(host='www.moutaichina.com', port=443): Max retries exceeded with url: /mtgf/tzzgx/gsgg/index.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.moutaichina.com', port=443) at 0x7fbad1b0bdd0>, 'Connection to www.moutaichina.com timed out. (connect timeout=20)'))",
+    "updatedAt": "2026-09-19 22:22:04",
+    "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 10,
     "structured": true,
     "provisional": true,
@@ -89,11 +91,11 @@
   },
   "summary": {
     "stock": {
-      "success": true,
+      "success": false,
       "skipped": false,
-      "failed": false,
+      "failed": true,
       "script": "update_stock_data.py",
-      "message": "ok"
+      "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
     },
     "winePrice": {
       "success": true,
@@ -119,7 +121,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-09-18 22:46:40",
+    "updatedAt": "2026-09-19 22:22:04",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
