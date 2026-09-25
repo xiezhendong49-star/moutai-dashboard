@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-09-24 23:16:02",
+  "updatedAt": "2026-09-25 23:21:58",
   "stock": {
     "success": false,
     "source": "tushare/akshare",
-    "updatedAt": "2026-09-24 23:15:54",
+    "updatedAt": "2026-09-25 23:21:50",
     "message": "股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
     "records": 4057,
     "valuationFields": {
@@ -60,19 +60,19 @@
     "latestRealDate": "2026-09-24",
     "latestRealBottlePrice": 1740,
     "latestRealCasePrice": 1755,
-    "todayUpdated": true,
+    "todayUpdated": false,
     "predictionUsesRealSourcePointsOnly": true,
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-09-24 23:15:56",
+    "updatedAt": "2026-09-25 23:21:52",
     "message": "酒价更新成功 1 个来源",
     "records": 9134
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-09-24 23:16:02",
+    "updatedAt": "2026-09-25 23:21:57",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 10,
     "structured": true,
@@ -121,7 +121,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-09-24 23:16:02",
+    "updatedAt": "2026-09-25 23:21:58",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
