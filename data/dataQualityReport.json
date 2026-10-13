@@ -1,47 +1,47 @@
 {
-  "updatedAt": "2026-10-11 23:46:21",
+  "updatedAt": "2026-10-13 02:07:58",
   "stock": {
-    "records": 4063,
+    "records": 4065,
     "dateRange": {
       "start": "2010-01-04",
-      "end": "2026-10-09"
+      "end": "2026-10-13"
     },
-    "latestDate": "2026-10-09",
+    "latestDate": "2026-10-13",
     "fieldCompleteness": {
       "close": {
         "field": "close",
-        "available": 4063,
-        "total": 4063,
+        "available": 4065,
+        "total": 4065,
         "rate": 1.0
       },
       "pe": {
         "field": "pe",
         "available": 0,
-        "total": 4063,
+        "total": 4065,
         "rate": 0.0
       },
       "peTtm": {
         "field": "peTtm",
         "available": 0,
-        "total": 4063,
+        "total": 4065,
         "rate": 0.0
       },
       "pb": {
         "field": "pb",
         "available": 0,
-        "total": 4063,
+        "total": 4065,
         "rate": 0.0
       },
       "dividendYield": {
         "field": "dividendYield",
         "available": 0,
-        "total": 4063,
+        "total": 4065,
         "rate": 0.0
       },
       "totalMarketCap": {
         "field": "totalMarketCap",
         "available": 0,
-        "total": 4063,
+        "total": 4065,
         "rate": 0.0
       }
     },
