@@ -1,31 +1,5 @@
 [
   {
-    "updatedAt": "2026-09-27 23:10:39",
-    "title": "数据自动更新完成",
-    "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
-    "changes": [
-      "stock: ok",
-      "winePrice: ok",
-      "financialReports: ok",
-      "dataQuality: ok"
-    ],
-    "dataStats": {
-      "winePrices": 9134,
-      "wineEstimatedPoints": 8960,
-      "wineRealDisplayPoints": 174,
-      "wineSourcePoints": 189,
-      "events": 26
-    },
-    "latestData": {
-      "latestWineDate": "2026-09-24",
-      "latestWinePrice": 1740,
-      "latestStockDate": "2026-09-24",
-      "latestFinancialPeriod": "2026Q1"
-    },
-    "source": "scripts/update_all.py",
-    "status": "success"
-  },
-  {
     "updatedAt": "2026-09-29 00:27:20",
     "title": "数据自动更新完成",
     "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
@@ -778,5 +752,31 @@
     },
     "source": "scripts/update_all.py",
     "status": "success"
+  },
+  {
+    "updatedAt": "2026-10-27 23:52:44",
+    "title": "数据自动更新部分失败",
+    "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
+    "changes": [
+      "stock: 股价数据更新失败：('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+      "winePrice: 今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: HTTPSConnectionPool(host='www.jiangjiujie.com', port=443): Max retries exceeded with url: /quote/price-htm-itemid-36.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jiangjiujie.com', port=443) at 0x7f5870b7c2d0>, 'Connection to www.jiangjiujie.com timed out. (connect timeout=20)'))",
+      "financialReports: ok",
+      "dataQuality: ok"
+    ],
+    "dataStats": {
+      "winePrices": 9142,
+      "wineEstimatedPoints": 8960,
+      "wineRealDisplayPoints": 182,
+      "wineSourcePoints": 197,
+      "events": 26
+    },
+    "latestData": {
+      "latestWineDate": "2026-10-16",
+      "latestWinePrice": 1720,
+      "latestStockDate": "2026-10-26",
+      "latestFinancialPeriod": "2026Q1"
+    },
+    "source": "scripts/update_all.py",
+    "status": "failed"
   }
 ]
