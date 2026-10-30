@@ -1,47 +1,47 @@
 {
-  "updatedAt": "2026-10-30 00:03:15",
+  "updatedAt": "2026-10-30 23:57:51",
   "stock": {
-    "records": 4077,
+    "records": 4078,
     "dateRange": {
       "start": "2010-01-04",
-      "end": "2026-10-29"
+      "end": "2026-10-30"
     },
-    "latestDate": "2026-10-29",
+    "latestDate": "2026-10-30",
     "fieldCompleteness": {
       "close": {
         "field": "close",
-        "available": 4077,
-        "total": 4077,
+        "available": 4078,
+        "total": 4078,
         "rate": 1.0
       },
       "pe": {
         "field": "pe",
         "available": 0,
-        "total": 4077,
+        "total": 4078,
         "rate": 0.0
       },
       "peTtm": {
         "field": "peTtm",
         "available": 0,
-        "total": 4077,
+        "total": 4078,
         "rate": 0.0
       },
       "pb": {
         "field": "pb",
         "available": 0,
-        "total": 4077,
+        "total": 4078,
         "rate": 0.0
       },
       "dividendYield": {
         "field": "dividendYield",
         "available": 0,
-        "total": 4077,
+        "total": 4078,
         "rate": 0.0
       },
       "totalMarketCap": {
         "field": "totalMarketCap",
         "available": 0,
-        "total": 4077,
+        "total": 4078,
         "rate": 0.0
       }
     },
@@ -188,8 +188,8 @@
     "enoughForFormalCorrelation": true
   },
   "financialReports": {
-    "records": 10,
-    "epsAvailable": 10,
+    "records": 11,
+    "epsAvailable": 11,
     "epsVerified": 1,
     "revenueAvailable": 9,
     "revenueVerified": 0,
