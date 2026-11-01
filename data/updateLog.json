@@ -1,31 +1,5 @@
 [
   {
-    "updatedAt": "2026-10-02 23:53:04",
-    "title": "数据自动更新完成",
-    "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
-    "changes": [
-      "stock: ok",
-      "winePrice: ok",
-      "financialReports: ok",
-      "dataQuality: ok"
-    ],
-    "dataStats": {
-      "winePrices": 9137,
-      "wineEstimatedPoints": 8960,
-      "wineRealDisplayPoints": 177,
-      "wineSourcePoints": 192,
-      "events": 26
-    },
-    "latestData": {
-      "latestWineDate": "2026-09-30",
-      "latestWinePrice": 1695,
-      "latestStockDate": "2026-09-30",
-      "latestFinancialPeriod": "2026Q1"
-    },
-    "source": "scripts/update_all.py",
-    "status": "success"
-  },
-  {
     "updatedAt": "2026-10-03 23:11:27",
     "title": "数据自动更新部分失败",
     "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
@@ -778,5 +752,31 @@
     },
     "source": "scripts/update_all.py",
     "status": "success"
+  },
+  {
+    "updatedAt": "2026-11-01 23:45:19",
+    "title": "数据自动更新部分失败",
+    "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
+    "changes": [
+      "stock: 股价数据更新失败：东方财富 push2 行情服务器断开了连接，通常是短时间内请求过多，当前 IP 被临时限流。首次限流一般约 5 分钟后恢复，反复触发后可能需要 40 分钟以上；等待期间不要重复调用东方财富的行情接口，否则会延长限流。",
+      "winePrice: ok",
+      "financialReports: ok",
+      "dataQuality: ok"
+    ],
+    "dataStats": {
+      "winePrices": 9143,
+      "wineEstimatedPoints": 8960,
+      "wineRealDisplayPoints": 183,
+      "wineSourcePoints": 198,
+      "events": 26
+    },
+    "latestData": {
+      "latestWineDate": "2026-10-27",
+      "latestWinePrice": 1700,
+      "latestStockDate": "2026-10-30",
+      "latestFinancialPeriod": "2026Q3"
+    },
+    "source": "scripts/update_all.py",
+    "status": "failed"
   }
 ]
