@@ -20,6 +20,7 @@ TASKS = [
     ("stock", "update_stock_data.py"),
     ("winePrice", "update_wine_price.py"),
     ("financialReports", "update_financial_reports.py"),
+    ("peFromEps", "calculate_pe_from_eps.py"),
     ("dataQuality", "audit_data_quality.py"),
 ]
 

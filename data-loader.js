@@ -146,6 +146,7 @@
     const peTtmAvailable = fieldCompleteness.peTtm?.available ?? 0;
     const rows = [
       ["PE TTM 完整率", completenessText(fieldCompleteness.peTtm)],
+      ["EPS兜底PE完整率", completenessText(fieldCompleteness.peFromEps)],
       ["PB 完整率", completenessText(fieldCompleteness.pb)],
       ["股息率完整率", completenessText(fieldCompleteness.dividendYield)],
       ["市值完整率", completenessText(fieldCompleteness.totalMarketCap)],
@@ -168,6 +169,19 @@
         <div class="metric"><span>计算口径</span><strong>estimated=false && verified=true && sample=false</strong></div>
       `;
     }
+  }
+
+  function renderPeFallbackMetric() {
+    const stockRows = Array.isArray(loaded.stockDaily.data) && loaded.stockDaily.data.length
+      ? loaded.stockDaily.data
+      : (Array.isArray(seed.stockDaily) ? seed.stockDaily : []);
+    const latest = [...stockRows].filter((row) => row && row.date).sort((a, b) => String(a.date).localeCompare(String(b.date))).at(-1);
+    if (!latest || Number.isFinite(Number(latest.peTtm)) || !Number.isFinite(Number(latest.peFromEps))) return;
+    const peTtm = document.getElementById("peTtm");
+    const peNote = document.getElementById("peNote");
+    const value = Number(latest.peFromEps);
+    if (peTtm) peTtm.textContent = `${value.toLocaleString("zh-CN", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}x`;
+    if (peNote) peNote.textContent = "EPS兜底估值，非官方PE";
   }
 
   function completenessText(item) {
@@ -203,4 +217,7 @@
   renderUpdateLog();
   setTimeout(renderDataQualityAudit, 0);
   setTimeout(renderDataQualityAudit, 300);
+  setTimeout(renderPeFallbackMetric, 0);
+  setTimeout(renderPeFallbackMetric, 300);
+  setTimeout(renderPeFallbackMetric, 1000);
 })();
