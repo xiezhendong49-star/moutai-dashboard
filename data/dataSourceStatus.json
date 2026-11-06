@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-11-05 00:57:11",
+  "updatedAt": "2026-11-06 00:59:40",
   "stock": {
     "success": true,
     "source": "akshare",
-    "updatedAt": "2026-11-05 00:57:04",
+    "updatedAt": "2026-11-06 00:59:13",
     "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
-    "records": 4081,
+    "records": 4082,
     "valuationFields": {
       "source": "akshare price only",
       "filled": false,
@@ -13,32 +13,32 @@
       "fields": {
         "pe": {
           "available": 0,
-          "total": 4081,
+          "total": 4082,
           "rate": 0.0
         },
         "peTtm": {
           "available": 0,
-          "total": 4081,
+          "total": 4082,
           "rate": 0.0
         },
         "pb": {
           "available": 0,
-          "total": 4081,
+          "total": 4082,
           "rate": 0.0
         },
         "dividendYield": {
           "available": 0,
-          "total": 4081,
+          "total": 4082,
           "rate": 0.0
         },
         "dividendYieldTtm": {
           "available": 0,
-          "total": 4081,
+          "total": 4082,
           "rate": 0.0
         },
         "totalMarketCap": {
           "available": 0,
-          "total": 4081,
+          "total": 4082,
           "rate": 0.0
         }
       }
@@ -60,17 +60,18 @@
     "latestRealCasePrice": 1710,
     "todayUpdated": false,
     "predictionUsesRealSourcePointsOnly": true,
-    "success": true,
+    "success": false,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-11-05 00:57:06",
-    "message": "酒价更新成功 1 个来源",
-    "records": 9143
+    "updatedAt": "2026-11-06 00:59:34",
+    "message": "今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: HTTPSConnectionPool(host='www.jiangjiujie.com', port=443): Max retries exceeded with url: /quote/price-htm-itemid-36.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jiangjiujie.com', port=443) at 0x7f1f925eb910>, 'Connection to www.jiangjiujie.com timed out. (connect timeout=20)'))",
+    "records": 9143,
+    "script": "update_wine_price.py"
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-11-05 00:57:10",
+    "updatedAt": "2026-11-06 00:59:39",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 11,
     "structured": true,
@@ -96,11 +97,11 @@
       "message": "ok"
     },
     "winePrice": {
-      "success": true,
+      "success": false,
       "skipped": false,
-      "failed": false,
+      "failed": true,
       "script": "update_wine_price.py",
-      "message": "ok"
+      "message": "今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: HTTPSConnectionPool(host='www.jiangjiujie.com', port=443): Max retries exceeded with url: /quote/price-htm-itemid-36.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.jiangjiujie.com', port=443) at 0x7f1f925eb910>, 'Connection to www.jiangjiujie.com timed out. (connect timeout=20)'))"
     },
     "financialReports": {
       "success": true,
@@ -119,7 +120,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-11-05 00:57:11",
+    "updatedAt": "2026-11-06 00:59:40",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
