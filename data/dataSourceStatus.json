@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-11-07 23:43:38",
+  "updatedAt": "2026-11-08 23:49:58",
   "stock": {
     "success": true,
     "source": "akshare",
-    "updatedAt": "2026-11-07 23:43:31",
+    "updatedAt": "2026-11-08 23:49:52",
     "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
     "records": 4083,
     "valuationFields": {
@@ -63,14 +63,14 @@
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-11-07 23:43:33",
+    "updatedAt": "2026-11-08 23:49:54",
     "message": "酒价更新成功 1 个来源",
     "records": 9143
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-11-07 23:43:37",
+    "updatedAt": "2026-11-08 23:49:58",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 11,
     "structured": true,
@@ -119,7 +119,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-11-07 23:43:38",
+    "updatedAt": "2026-11-08 23:49:58",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
