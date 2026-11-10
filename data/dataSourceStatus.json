@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-08 23:49:58",
+  "updatedAt": "2026-11-10 02:48:46",
   "stock": {
-    "success": true,
-    "source": "akshare",
-    "updatedAt": "2026-11-08 23:49:52",
-    "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
+    "success": false,
+    "source": "tushare/akshare",
+    "updatedAt": "2026-11-10 02:48:41",
+    "message": "股价数据更新失败：东方财富 push2 行情服务器断开了连接，通常是短时间内请求过多，当前 IP 被临时限流。首次限流一般约 5 分钟后恢复，反复触发后可能需要 40 分钟以上；等待期间不要重复调用东方财富的行情接口，否则会延长限流。",
     "records": 4083,
     "valuationFields": {
       "source": "akshare price only",
@@ -42,7 +42,9 @@
           "rate": 0.0
         }
       }
-    }
+    },
+    "skipped": false,
+    "script": "update_stock_data.py"
   },
   "winePrice": {
     "historyRange": {
@@ -63,14 +65,14 @@
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-11-08 23:49:54",
+    "updatedAt": "2026-11-10 02:48:42",
     "message": "酒价更新成功 1 个来源",
     "records": 9143
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-11-08 23:49:58",
+    "updatedAt": "2026-11-10 02:48:46",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 11,
     "structured": true,
@@ -89,11 +91,11 @@
   },
   "summary": {
     "stock": {
-      "success": true,
+      "success": false,
       "skipped": false,
-      "failed": false,
+      "failed": true,
       "script": "update_stock_data.py",
-      "message": "ok"
+      "message": "股价数据更新失败：东方财富 push2 行情服务器断开了连接，通常是短时间内请求过多，当前 IP 被临时限流。首次限流一般约 5 分钟后恢复，反复触发后可能需要 40 分钟以上；等待期间不要重复调用东方财富的行情接口，否则会延长限流。"
     },
     "winePrice": {
       "success": true,
@@ -119,7 +121,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-11-08 23:49:58",
+    "updatedAt": "2026-11-10 02:48:46",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
