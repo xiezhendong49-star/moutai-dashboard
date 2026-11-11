@@ -1,47 +1,47 @@
 {
-  "updatedAt": "2026-11-10 02:48:46",
+  "updatedAt": "2026-11-11 00:43:33",
   "stock": {
-    "records": 4083,
+    "records": 4085,
     "dateRange": {
       "start": "2010-01-04",
-      "end": "2026-11-06"
+      "end": "2026-11-10"
     },
-    "latestDate": "2026-11-06",
+    "latestDate": "2026-11-10",
     "fieldCompleteness": {
       "close": {
         "field": "close",
-        "available": 4083,
-        "total": 4083,
+        "available": 4085,
+        "total": 4085,
         "rate": 1.0
       },
       "pe": {
         "field": "pe",
         "available": 0,
-        "total": 4083,
+        "total": 4085,
         "rate": 0.0
       },
       "peTtm": {
         "field": "peTtm",
         "available": 0,
-        "total": 4083,
+        "total": 4085,
         "rate": 0.0
       },
       "pb": {
         "field": "pb",
         "available": 0,
-        "total": 4083,
+        "total": 4085,
         "rate": 0.0
       },
       "dividendYield": {
         "field": "dividendYield",
         "available": 0,
-        "total": 4083,
+        "total": 4085,
         "rate": 0.0
       },
       "totalMarketCap": {
         "field": "totalMarketCap",
         "available": 0,
-        "total": 4083,
+        "total": 4085,
         "rate": 0.0
       }
     },
@@ -190,13 +190,13 @@
   "financialReports": {
     "records": 11,
     "epsAvailable": 11,
-    "epsVerified": 1,
+    "epsVerified": 2,
     "revenueAvailable": 9,
     "revenueVerified": 0,
     "netProfitAvailable": 9,
     "netProfitVerified": 0,
     "provisionalRecords": 9,
-    "officialVerifiedRecords": 1,
+    "officialVerifiedRecords": 2,
     "note": "当前财报结构化字段已补齐，但主要是 provisional 数据，正式研究需以官方报告核验。"
   },
   "events": {
