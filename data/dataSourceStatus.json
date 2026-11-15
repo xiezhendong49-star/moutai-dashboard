@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-14 00:56:17",
+  "updatedAt": "2026-11-15 00:02:20",
   "stock": {
-    "success": true,
-    "source": "akshare",
-    "updatedAt": "2026-11-14 00:56:09",
-    "message": "股价数据更新成功；AkShare 当前未补齐估值字段",
+    "success": false,
+    "source": "tushare/akshare",
+    "updatedAt": "2026-11-14 23:59:34",
+    "message": "股价数据更新失败：stock_zh_a_hist 已在 1.20.46 更名为 stock_zh_a_hist_em，请改用 ak.stock_zh_a_hist_em；参数与返回的列也可能有调整，用 ak.interface_info(\"stock_zh_a_hist_em\") 查看。完整对照见 https://akshare.akfamily.xyz/changelog.html#changelog-rename",
     "records": 4088,
     "valuationFields": {
       "source": "akshare price only",
@@ -42,7 +42,9 @@
           "rate": 0.0
         }
       }
-    }
+    },
+    "skipped": false,
+    "script": "update_stock_data.py"
   },
   "winePrice": {
     "historyRange": {
@@ -63,15 +65,15 @@
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-11-14 00:56:11",
+    "updatedAt": "2026-11-14 23:59:36",
     "message": "酒价更新成功 1 个来源",
     "records": 9143
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-11-14 00:56:16",
-    "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
+    "updatedAt": "2026-11-15 00:02:20",
+    "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验；部分列表/自动源失败：https://www.moutaichina.com/mtgf/tzzgx/cwbg/index.html: HTTPSConnectionPool(host='www.moutaichina.com', port=443): Max retries exceeded with url: /mtgf/tzzgx/cwbg/index.html (Caused by ConnectTimeoutError(<HTTPSConnection(host='www.moutaichina.com', port=443) at 0x7d12749ffe10>, 'Connection to www.moutaichina.com timed out. (connect timeout=20)'))",
     "records": 11,
     "structured": true,
     "provisional": true,
@@ -89,11 +91,11 @@
   },
   "summary": {
     "stock": {
-      "success": true,
+      "success": false,
       "skipped": false,
-      "failed": false,
+      "failed": true,
       "script": "update_stock_data.py",
-      "message": "ok"
+      "message": "股价数据更新失败：stock_zh_a_hist 已在 1.20.46 更名为 stock_zh_a_hist_em，请改用 ak.stock_zh_a_hist_em；参数与返回的列也可能有调整，用 ak.interface_info(\"stock_zh_a_hist_em\") 查看。完整对照见 https://akshare.akfamily.xyz/changelog.html#changelog-rename"
     },
     "winePrice": {
       "success": true,
@@ -119,7 +121,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-11-14 00:56:17",
+    "updatedAt": "2026-11-15 00:02:20",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
