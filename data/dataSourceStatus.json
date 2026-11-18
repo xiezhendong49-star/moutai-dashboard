@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-11-17 02:59:54",
+  "updatedAt": "2026-11-18 02:29:13",
   "stock": {
     "success": false,
     "source": "tushare/akshare",
-    "updatedAt": "2026-11-17 02:59:47",
+    "updatedAt": "2026-11-18 02:29:05",
     "message": "股价数据更新失败：stock_zh_a_hist 已在 1.20.46 更名为 stock_zh_a_hist_em，请改用 ak.stock_zh_a_hist_em；参数与返回的列也可能有调整，用 ak.interface_info(\"stock_zh_a_hist_em\") 查看。完整对照见 https://akshare.akfamily.xyz/changelog.html#changelog-rename",
     "records": 4088,
     "valuationFields": {
@@ -62,17 +62,18 @@
     "latestRealCasePrice": 1710,
     "todayUpdated": false,
     "predictionUsesRealSourcePointsOnly": true,
-    "success": true,
+    "success": false,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-11-17 02:59:49",
-    "message": "酒价更新成功 1 个来源",
-    "records": 9143
+    "updatedAt": "2026-11-18 02:29:08",
+    "message": "今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: 酱酒界酱酒行情监测中心 未匹配到散瓶或原箱价格",
+    "records": 9143,
+    "script": "update_wine_price.py"
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-11-17 02:59:53",
+    "updatedAt": "2026-11-18 02:29:13",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 11,
     "structured": true,
@@ -98,11 +99,11 @@
       "message": "股价数据更新失败：stock_zh_a_hist 已在 1.20.46 更名为 stock_zh_a_hist_em，请改用 ak.stock_zh_a_hist_em；参数与返回的列也可能有调整，用 ak.interface_info(\"stock_zh_a_hist_em\") 查看。完整对照见 https://akshare.akfamily.xyz/changelog.html#changelog-rename"
     },
     "winePrice": {
-      "success": true,
+      "success": false,
       "skipped": false,
-      "failed": false,
+      "failed": true,
       "script": "update_wine_price.py",
-      "message": "ok"
+      "message": "今日酒价未更新，当前使用最近一次成功数据：酱酒界酱酒行情监测中心: 酱酒界酱酒行情监测中心 未匹配到散瓶或原箱价格"
     },
     "financialReports": {
       "success": true,
@@ -121,7 +122,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-11-17 02:59:54",
+    "updatedAt": "2026-11-18 02:29:13",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
