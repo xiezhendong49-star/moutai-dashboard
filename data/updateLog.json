@@ -1,31 +1,5 @@
 [
   {
-    "updatedAt": "2026-10-22 23:31:09",
-    "title": "数据自动更新完成",
-    "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
-    "changes": [
-      "stock: ok",
-      "winePrice: ok",
-      "financialReports: ok",
-      "dataQuality: ok"
-    ],
-    "dataStats": {
-      "winePrices": 9142,
-      "wineEstimatedPoints": 8960,
-      "wineRealDisplayPoints": 182,
-      "wineSourcePoints": 197,
-      "events": 26
-    },
-    "latestData": {
-      "latestWineDate": "2026-10-16",
-      "latestWinePrice": 1720,
-      "latestStockDate": "2026-10-22",
-      "latestFinancialPeriod": "2026Q1"
-    },
-    "source": "scripts/update_all.py",
-    "status": "success"
-  },
-  {
     "updatedAt": "2026-10-23 23:15:29",
     "title": "数据自动更新完成",
     "summary": "脚本已运行，页面可通过本公告确认最近一次更新时间。",
@@ -755,6 +729,32 @@
   },
   {
     "updatedAt": "2026-11-21 01:37:10",
+    "title": "数据自动更新部分失败",
+    "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
+    "changes": [
+      "stock: 股价数据更新失败：stock_zh_a_hist 已在 1.20.46 更名为 stock_zh_a_hist_em，请改用 ak.stock_zh_a_hist_em；参数与返回的列也可能有调整，用 ak.interface_info(\"stock_zh_a_hist_em\") 查看。完整对照见 https://akshare.akfamily.xyz/changelog.html#changelog-rename",
+      "winePrice: ok",
+      "financialReports: ok",
+      "dataQuality: ok"
+    ],
+    "dataStats": {
+      "winePrices": 9143,
+      "wineEstimatedPoints": 8960,
+      "wineRealDisplayPoints": 183,
+      "wineSourcePoints": 198,
+      "events": 26
+    },
+    "latestData": {
+      "latestWineDate": "2026-10-27",
+      "latestWinePrice": 1700,
+      "latestStockDate": "2026-11-13",
+      "latestFinancialPeriod": "2026Q3"
+    },
+    "source": "scripts/update_all.py",
+    "status": "failed"
+  },
+  {
+    "updatedAt": "2026-11-22 00:31:17",
     "title": "数据自动更新部分失败",
     "summary": "脚本已运行，部分数据源失败，旧数据已保留。",
     "changes": [
