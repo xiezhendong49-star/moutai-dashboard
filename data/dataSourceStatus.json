@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-11-24 04:52:27",
+  "updatedAt": "2026-11-25 03:36:18",
   "stock": {
     "success": false,
     "source": "tushare/akshare",
-    "updatedAt": "2026-11-24 04:52:18",
+    "updatedAt": "2026-11-25 03:36:08",
     "message": "股价数据更新失败：stock_zh_a_hist 已在 1.20.46 更名为 stock_zh_a_hist_em，请改用 ak.stock_zh_a_hist_em；参数与返回的列也可能有调整，用 ak.interface_info(\"stock_zh_a_hist_em\") 查看。完整对照见 https://akshare.akfamily.xyz/changelog.html#changelog-rename",
     "records": 4088,
     "valuationFields": {
@@ -65,14 +65,14 @@
     "success": true,
     "skipped": false,
     "source": "configured_html_sources",
-    "updatedAt": "2026-11-24 04:52:20",
+    "updatedAt": "2026-11-25 03:36:11",
     "message": "酒价更新成功 1 个来源",
     "records": 9143
   },
   "financialReports": {
     "success": true,
     "source": "AkShare + 公开财报摘要",
-    "updatedAt": "2026-11-24 04:52:27",
+    "updatedAt": "2026-11-25 03:36:18",
     "message": "财报结构化字段已补齐；来源=AkShare + 公开财报摘要；当前主要为 provisional 数据，正式研究需以官方报告核验",
     "records": 11,
     "structured": true,
@@ -121,7 +121,7 @@
   },
   "dataQuality": {
     "success": true,
-    "updatedAt": "2026-11-24 04:52:27",
+    "updatedAt": "2026-11-25 03:36:18",
     "reportFile": "data/dataQualityReport.json",
     "peTtmAvailable": 0,
     "peTtmCompleteness": 0.0,
